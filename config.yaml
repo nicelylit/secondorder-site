@@ -1,0 +1,132 @@
+# config.yaml
+baseurl: https://secondorder.net
+title: Second Order
+theme: stack
+paginate: 10
+
+# 默认语言
+defaultContentLanguage: zh-cn
+locale: zh-cn
+
+# 语言配置
+languages:
+    zh-cn:
+        locale: zh-cn
+        label: 中文
+        title: Second Order
+        weight: 1
+        params:
+            description: 一个软件工程师的日常
+
+    en:
+        locale: en-us
+        label: English
+        title: Second Order
+        weight: 2
+        params:
+            description: A software engineer's musings
+
+# 菜单配置
+menu:
+    main:
+        - identifier: home
+          name: 首页
+          url: /
+          weight: 1
+          params:
+              icon: home
+
+        - identifier: engineering
+          name: 工程
+          url: /categories/engineering/
+          weight: 2
+          params:
+              icon: tool
+
+        - identifier: writing
+          name: 随笔
+          url: /categories/writing/
+          weight: 3
+          params:
+              icon: feather
+
+        - identifier: archives
+          name: 归档
+          url: /archives/
+          weight: 4
+          params:
+              icon: archives
+
+        - identifier: search
+          name: 搜索
+          url: /search/
+          weight: 5
+          params:
+              icon: search
+
+# Stack主题配置
+params:
+    mainSections:
+        - engineering
+        - writing
+
+    # 网站图标
+    favicon: /favicon.ico
+
+    # 侧边栏配置
+    sidebar:
+        emoji: 🍥
+        subtitle: 一个软件工程师的两种修行
+        # avatar: img/avatar.png     # ← 修复：直接字符串，不要嵌套
+
+    # 文章配置
+    article:
+        math: true
+        toc: true
+        readingTime: true
+        license:
+            enabled: true
+            default: Licensed under CC BY-NC-SA 4.0
+
+    # 评论配置（先注释掉，等配置好Giscus再启用）
+    # comments:
+    #     enabled: true
+    #     provider: giscus
+    #     giscus:
+    #         repo: 你的用户名/blog-comments
+    #         repoID: R_xxx
+    #         category: General
+    #         categoryID: DIC_xxx
+
+    # 搜索配置（等Pagefind配置好再启用）
+    # search:
+    #     enabled: true
+    #     type: pagefind
+
+# 输出格式
+outputs:
+    home:
+        - HTML
+        - RSS
+        - JSON
+
+# 分类法
+taxonomies:
+    category: categories
+    tag: tags
+    series: series
+
+# Markdown配置
+markup:
+    goldmark:
+        renderer:
+            unsafe: true
+    highlight:
+        noClasses: false
+        codeFences: true
+        guessSyntax: true
+        lineNos: true
+    tableOfContents:
+        endLevel: 4
+        ordered: false
+        startLevel: 2
