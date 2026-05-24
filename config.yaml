@@ -1,122 +1,160 @@
 # config.yaml
 baseurl: https://secondorder.net
-title: Second Order
+title: 有点稳 (Second Order)
 theme: stack
 paginate: 10
-
-# 默认语言
 defaultContentLanguage: zh-cn
-locale: zh-cn
 
-# 语言配置
 languages:
     zh-cn:
         locale: zh-cn
         label: 中文
-        title: Second Order
+        title: 有点稳
         weight: 1
+
+        menu:
+            main:
+                - identifier: home
+                  name: 首页
+                  url: /
+                  weight: 1
+                  params:
+                      icon: home
+
+                - identifier: engineering
+                  name: 工程
+                  url: /categories/engineering/
+                  weight: 2
+                  params:
+                      icon: tool
+
+                - identifier: writing
+                  name: 随笔
+                  url: /categories/writing/
+                  weight: 3
+                  params:
+                      icon: feather
+
+                - identifier: archives
+                  name: 归档
+                  url: /archives/
+                  weight: 4
+                  params:
+                      icon: archives
+
+                - identifier: search
+                  name: 搜索
+                  url: /search/
+                  weight: 5
+                  params:
+                      icon: search
+
+                - identifier: links
+                  name: 友情链接
+                  url: /links/
+                  weight: 6
+                  params:
+                      icon: link
+
+                - identifier: about
+                  name: 关于
+                  url: /about/
+                  weight: 7
+                  params:
+                      icon: user
         params:
-            description: 一个软件工程师的日常
+            description: 记录软件工程中的真实问题、底层方法，以及技术之外，关于成长、观察与内省的思考。
+            sidebar:
+                subtitle: 在复杂系统中寻找清晰，在变化中保持清醒。
+                # subtitle: 一个软件工程师的两种修行：在复杂系统中有效行动，在不确定性中保持清醒。
 
     en:
         locale: en-us
         label: English
         title: Second Order
         weight: 2
+
+        menu:
+            main:
+                - identifier: home
+                  name: Home
+                  url: /en/
+                  weight: 1
+                  params:
+                      icon: home
+
+                - identifier: engineering
+                  name: Engineering
+                  url: /en/categories/engineering/
+                  weight: 2
+                  params:
+                      icon: tool
+
+                - identifier: writing
+                  name: Writing
+                  url: /en/categories/writing/
+                  weight: 3
+                  params:
+                      icon: feather
+
+                - identifier: archives
+                  name: Archives
+                  url: /en/archives/
+                  weight: 4
+                  params:
+                      icon: archives
+
+                - identifier: search
+                  name: Search
+                  url: /en/search/
+                  weight: 5
+                  params:
+                      icon: search
+
+                - identifier: links
+                  name: Links
+                  url: /en/links/
+                  weight: 6
+                  params:
+                      icon: link
+
+                - identifier: about
+                  name: About
+                  url: /en/about/
+                  weight: 7
+                  params:
+                      icon: user
         params:
-            description: A software engineer's musings
+            description: Real problems and fundamental methods in software engineering, plus reflections on growth, observation, and introspection beyond code.
+            sidebar:
+                # subtitle: "Two disciplines: effective action in complex systems, clarity in uncertainty."
+                subtitle: Seeking clarity in complex systems, staying clear amid change.
 
-# 菜单配置
-menu:
-    main:
-        - identifier: home
-          name: 首页
-          url: /
-          weight: 1
-          params:
-              icon: home
-
-        - identifier: engineering
-          name: 工程
-          url: /categories/engineering/
-          weight: 2
-          params:
-              icon: tool
-
-        - identifier: writing
-          name: 随笔
-          url: /categories/writing/
-          weight: 3
-          params:
-              icon: feather
-
-        - identifier: archives
-          name: 归档
-          url: /archives/
-          weight: 4
-          params:
-              icon: archives
-
-        - identifier: search
-          name: 搜索
-          url: /search/
-          weight: 5
-          params:
-              icon: search
-
-# Stack主题配置
 params:
     mainSections:
-        - engineering
-        - writing
+        - posts
 
-    # 网站图标
     favicon: /favicon.ico
 
-    # 侧边栏配置
     sidebar:
-        emoji: 🍥
-        subtitle: 一个软件工程师的两种修行
-        # avatar: img/avatar.png     # ← 修复：直接字符串，不要嵌套
+        avatar: /img/avatar.png
 
-    # 文章配置
     article:
         math: true
         toc: true
         readingTime: true
-        license:
-            enabled: true
-            default: Licensed under CC BY-NC-SA 4.0
 
-    # 评论配置（先注释掉，等配置好Giscus再启用）
-    # comments:
-    #     enabled: true
-    #     provider: giscus
-    #     giscus:
-    #         repo: 你的用户名/blog-comments
-    #         repoID: R_xxx
-    #         category: General
-    #         categoryID: DIC_xxx
-
-    # 搜索配置（等Pagefind配置好再启用）
-    # search:
-    #     enabled: true
-    #     type: pagefind
-
-# 输出格式
 outputs:
     home:
         - HTML
         - RSS
         - JSON
 
-# 分类法
 taxonomies:
     category: categories
     tag: tags
     series: series
 
-# Markdown配置
 markup:
     goldmark:
         renderer:
@@ -124,9 +162,3 @@ markup:
     highlight:
         noClasses: false
         codeFences: true
-        guessSyntax: true
-        lineNos: true
-    tableOfContents:
-        endLevel: 4
-        ordered: false
-        startLevel: 2
