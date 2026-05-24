@@ -2,6 +2,7 @@
 date = '2026-05-23T21:06:48+08:00'
 title = '第二篇中文日志'
 categories = ["writing"]
+tags = ["Hugo", "Blog", "RSS", "工程"]
 +++
 ## 简介
 

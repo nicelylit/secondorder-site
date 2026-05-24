@@ -63,6 +63,20 @@ languages:
                   weight: 7
                   params:
                       icon: user
+
+            social:
+                - identifier: github
+                  name: GitHub
+                  url: https://github.com/nicelylit/secondorder-site
+                  params:
+                      icon: brand-github
+
+                - identifier: rss
+                  name: RSS
+                  url: /index.xml
+                  params:
+                      icon: rss
+
         params:
             description: 记录软件工程中的真实问题、底层方法，以及技术之外，关于成长、观察与内省的思考。
             sidebar:
@@ -126,6 +140,20 @@ languages:
                   weight: 7
                   params:
                       icon: user
+
+            social:
+                - identifier: github
+                  name: GitHub
+                  url: https://github.com/nicelylit/secondorder-site
+                  params:
+                      icon: brand-github
+
+                - identifier: rss
+                  name: RSS
+                  url: /en/index.xml
+                  params:
+                      icon: rss
+
         params:
             description: Real problems and fundamental methods in software engineering, plus reflections on growth, observation, and introspection beyond code.
             sidebar:
@@ -145,6 +173,11 @@ params:
         math: true
         toc: true
         readingTime: true
+
+    widgets:
+        homepage:
+            - type: archives
+            - type: tag-cloud
 
 outputs:
     home:
