@@ -1,0 +1,13 @@
+{{ define "main" }}
+  <link rel="stylesheet" href="/pagefind/pagefind-ui.css">
+  <div id="pagefind-search" class="max-w-3xl mx-auto"></div>
+  <script src="/pagefind/pagefind-ui.js"></script>
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      new PagefindUI({
+        element: "#pagefind-search",
+        showSubResults: true
+      });
+    });
+  </script>
+{{ end }}
