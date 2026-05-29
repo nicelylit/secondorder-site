@@ -156,7 +156,7 @@ tags:
 2. 查看各个硬件信息是否符合商品描述；
 3. 查看机箱前面板和后面板的接口是否都能正常工作。
 
-[![image1](http://mjm1990.com/wp-content/uploads/2022/04/image1-954x1024.png)](http://mjm1990.com/wp-content/uploads/2022/04/image1.png)前两步到BIOS出现，基本可以算硬件没有故障。第三步需要装上操作系统后再实测以下，特别是网络接口和音频接口。显示器接口、电源开关、重启开关、电源指示灯和USB接口在BIOS阶段也都会得到检查。只要不是硬件的问题，就能省去沟通客服的麻烦。
+[![image1](/wp-content/uploads/2022/04/image1-954x1024.png)](/wp-content/uploads/2022/04/image1.png)前两步到BIOS出现，基本可以算硬件没有故障。第三步需要装上操作系统后再实测以下，特别是网络接口和音频接口。显示器接口、电源开关、重启开关、电源指示灯和USB接口在BIOS阶段也都会得到检查。只要不是硬件的问题，就能省去沟通客服的麻烦。
 
 ## 划分大的阶段
 
@@ -201,7 +201,7 @@ tags:
 19. 风扇的风向要符合机箱的设计
 20. 避免螺丝留在主板上
 
-## [![image2](http://mjm1990.com/wp-content/uploads/2022/04/image2-225x300.jpg)](http://mjm1990.com/wp-content/uploads/2022/04/image2.jpg)检验步骤和注意事项
+## [![image2](/wp-content/uploads/2022/04/image2-225x300.jpg)](/wp-content/uploads/2022/04/image2.jpg)检验步骤和注意事项
 
 主要的接线检查：
 
@@ -255,7 +255,7 @@ tags:
 
 最后，还是应该配上第一时间成功点亮的照片，以作纪念。
 
-# [![2065412220](http://mjm1990.com/wp-content/uploads/2022/04/2065412220-1024x768.jpg)](http://mjm1990.com/wp-content/uploads/2022/04/2065412220.jpg)配置过程
+# [![2065412220](/wp-content/uploads/2022/04/2065412220-1024x768.jpg)](/wp-content/uploads/2022/04/2065412220.jpg)配置过程
 
 ## 五个困难
 
@@ -293,7 +293,7 @@ tags:
 2. aosp\_x86\_64-eng
 3. sdk\_phone\_x86\_64
 
-## [![Screenshot from 2022-04-03 12-07-06](http://mjm1990.com/wp-content/uploads/2022/04/Screenshot-from-2022-04-03-12-07-06-1024x576.png)](http://mjm1990.com/wp-content/uploads/2022/04/Screenshot-from-2022-04-03-12-07-06.png)编译性能
+## [![Screenshot from 2022-04-03 12-07-06](/wp-content/uploads/2022/04/Screenshot-from-2022-04-03-12-07-06-1024x576.png)](/wp-content/uploads/2022/04/Screenshot-from-2022-04-03-12-07-06.png)编译性能
 
 性能方面，第一次编译，耗时近两个小时。这个记录不及官方72核的40分钟，但却好过6核的3个小时。16核的算力还算不错。内存消耗没有想象中那么多，始终稳定在20%上下。处理器的温度在50摄氏度上下，固态硬盘的温度到了60摄氏度。第二次编译，耗时一小时一刻钟。第三次编译，耗时一刻钟，应该是复用了前两个编译目标的一些编译产物。
 

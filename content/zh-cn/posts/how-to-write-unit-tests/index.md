@@ -137,11 +137,11 @@ By far, we nearly get the whole picture about how the unit testing works except 
 
 The answer is to use code coverage library. Jacoco is a popular library for Java. The following picture is a typical HTML report that Jacoco generates. Green lines are the code which has been run at least once in unit tests. Red lines are the code which has not been run at all. Yellow lines are the code which has been run partially, because some of the branches are missed. When you hover the mouse pointer, a tooltip will tell us how many branches are missed.
 
-[![Screen Shot 2017-05-21 at 12.55.52](http://mjm1990.com/wp-content/uploads/2017/05/Screen-Shot-2017-05-21-at-12.55.52.png)](http://mjm1990.com/wp-content/uploads/2017/05/Screen-Shot-2017-05-21-at-12.55.52.png)
+[![Screen Shot 2017-05-21 at 12.55.52](/wp-content/uploads/2017/05/Screen-Shot-2017-05-21-at-12.55.52.png)](/wp-content/uploads/2017/05/Screen-Shot-2017-05-21-at-12.55.52.png)
 
 Line coverage rate and branch coverage rate are the two metrics that we often use to measure the effectiveness of our unit tests. They are easy to understand by reading the words, but different library could give different reports due to technique defects. The following picture illustrates what a Jacoco report looks like.
 
-[![Screen Shot 2017-05-22 at 19.47.09](http://mjm1990.com/wp-content/uploads/2017/05/Screen-Shot-2017-05-22-at-19.47.09.png)](http://mjm1990.com/wp-content/uploads/2017/05/Screen-Shot-2017-05-22-at-19.47.09.png)
+[![Screen Shot 2017-05-22 at 19.47.09](/wp-content/uploads/2017/05/Screen-Shot-2017-05-22-at-19.47.09.png)](/wp-content/uploads/2017/05/Screen-Shot-2017-05-22-at-19.47.09.png)
 
 Jacoco helps us to do test-driven development faster and robust.
 

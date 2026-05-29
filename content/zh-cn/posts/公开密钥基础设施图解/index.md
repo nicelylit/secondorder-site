@@ -15,7 +15,7 @@ tags:
 
 很久以来，一直搞不清楚各种加密算法、哈希函数的应用场景，直到读了“[深入理解加密、解密、数字签名和数字证书](http://blog.csdn.net/sszgg2006/article/details/8199175)”这篇博文后，一切概念立刻变得明朗起来，于是赶快画了一张图捋清了思路，方便自己和看到这篇文章的朋友回顾。因为原文作者写得足够精彩，逻辑性很强，所以在此只简略叙述图中所画内容。
 
-[![basics-of-public-key-infrastrature](http://mjm1990.com/wp-content/uploads/2016/09/basics-of-public-key-infrastrature.png)](http://mjm1990.com/wp-content/uploads/2016/09/basics-of-public-key-infrastrature.png)
+[![basics-of-public-key-infrastrature](/wp-content/uploads/2016/09/basics-of-public-key-infrastrature.png)](/wp-content/uploads/2016/09/basics-of-public-key-infrastrature.png)
 
  
 

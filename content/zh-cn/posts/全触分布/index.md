@@ -296,8 +296,8 @@ n    1   8  15  21  28  36  43  51  58  66
 
 全触分布的分布律
 
-[![touch-all-dist](http://mjm1990.com/wp-content/uploads/2018/09/touch-all-dist.png)](http://mjm1990.com/wp-content/uploads/2018/09/touch-all-dist.png)
+[![touch-all-dist](/wp-content/uploads/2018/09/touch-all-dist.png)](/wp-content/uploads/2018/09/touch-all-dist.png)
 
 全触分布的累积分布函数
 
-[![touch-all-cum](http://mjm1990.com/wp-content/uploads/2018/09/touch-all-cum.png)](http://mjm1990.com/wp-content/uploads/2018/09/touch-all-cum.png)
+[![touch-all-cum](/wp-content/uploads/2018/09/touch-all-cum.png)](/wp-content/uploads/2018/09/touch-all-cum.png)

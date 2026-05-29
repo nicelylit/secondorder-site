@@ -6,7 +6,7 @@ categories:
   - "生活小记"
 ---
 
-[![](https://mjm1990.com/wp-content/uploads/2023/01/logo-story-300x150.png)](< https:=>)
+[![](/wp-content/uploads/2023/01/logo-story-300x150.png)](< https:=>)
 
 Jeremy's World翻译成中文是吉里米的世界，取自《苏菲的世界》，博客搭建那段时间我刚好在读这本小书，格外喜欢，便用作了站点的标题。
 

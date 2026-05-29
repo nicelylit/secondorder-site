@@ -5,7 +5,7 @@ categories:
   - "个人博客"
 ---
 
-之前的解决方案通过JavaScript脚本将公式转换为图片，即使用[ASCIIMathTeXImg.js](http://mjm1990.com/wp-content/uploads/2015/02/ASCIIMathTeXImg.js)，在<head></head>中引用如下的代码。
+之前的解决方案通过JavaScript脚本将公式转换为图片，即使用[ASCIIMathTeXImg.js](/wp-content/uploads/2015/02/ASCIIMathTeXImg.js)，在<head></head>中引用如下的代码。
 
 ```
 <script type="text/javascript" src="<?php bloginfo('template_url'); ?>/js/ASCIIMathTeXImg.js">

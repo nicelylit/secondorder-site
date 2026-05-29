@@ -27,11 +27,11 @@ categories:
 ? max-height: 100px;
 }
 <div class="middleWrapper">
-  <img src="http://mjm1990.com/wp-content/uploads/2015/01/violin.jpg">
+  <img src="/wp-content/uploads/2015/01/violin.jpg">
 </div>
 ```
 
-![](http://mjm1990.com/wp-content/uploads/2015/01/violin.jpg)
+![](/wp-content/uploads/2015/01/violin.jpg)
 
 上面的代码中重要之处在于line-height恰好等于height，这样整个包含块就变成了一行，在单行内居中行内元素，只需要指定vertical-align是middle即可。
 

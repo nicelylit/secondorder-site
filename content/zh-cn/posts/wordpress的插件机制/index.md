@@ -17,9 +17,9 @@ tags:
 
 WordPress插件机制的核心是钩子（Hooks），每一次处理请求都会顺序执行一系列的钩子，每个钩子由唯一的标签（Tag）标识，每个钩子上能够注册数量不限的函数，在钩子执行中，函数按照注册时的优先级先后依次执行，每个钩子可以重复被执行。
 
-举例来讲，当服务器接到首页的请求时，第一个钩子_muplugins\_loaded_会在加载完[自动激活（Must-Use）](https://www.sitepoint.com/wordpress-mu-plugins/)插件后被执行，第二个钩子_registered\_taxonomy_会在系统初始化默认的分类系统（create\_initial\_taxonomies）中执行。在响应信息完成前，有[几十个钩子](https://codex.wordpress.org/Plugin_API/Action_Reference)被依次执行。[](http://mjm1990.com/wp-content/uploads/2016/08/default_actions_sequence.png)
+举例来讲，当服务器接到首页的请求时，第一个钩子_muplugins\_loaded_会在加载完[自动激活（Must-Use）](https://www.sitepoint.com/wordpress-mu-plugins/)插件后被执行，第二个钩子_registered\_taxonomy_会在系统初始化默认的分类系统（create\_initial\_taxonomies）中执行。在响应信息完成前，有[几十个钩子](https://codex.wordpress.org/Plugin_API/Action_Reference)被依次执行。[](/wp-content/uploads/2016/08/default_actions_sequence.png)
 
-[![default\_actions\_sequence](http://mjm1990.com/wp-content/uploads/2016/08/default_actions_sequence-1024x399.png)](http://mjm1990.com/wp-content/uploads/2016/08/default_actions_sequence.png)
+[![default\_actions\_sequence](/wp-content/uploads/2016/08/default_actions_sequence-1024x399.png)](/wp-content/uploads/2016/08/default_actions_sequence.png)
 
 如果钩子上没有注册函数，那么执行钩子时并没有实际动作。比如_registered\_taxonomy_是在每个分类系统注册结束时被执行，当初始化分类系统时，4.5.3版本默认注册了5个分类系统：category、post\_tag、nav\_menu、link\_category、post\_format，每个分类系统注册结束后_registered\_taxonomy_都被执行一次，但由于WordPress核心并没有在这个钩子上注册过函数，所以没有实际的动作。
 

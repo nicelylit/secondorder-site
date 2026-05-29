@@ -35,7 +35,7 @@ tags:
 
 ###### 安卓包签名示意图：
 
-[![apk-signing-process](http://mjm1990.com/wp-content/uploads/2016/10/apk-signing-process.png)](http://mjm1990.com/wp-content/uploads/2016/10/apk-signing-process.png)
+[![apk-signing-process](/wp-content/uploads/2016/10/apk-signing-process.png)](/wp-content/uploads/2016/10/apk-signing-process.png)
 
 ###### 相关阅读：
 

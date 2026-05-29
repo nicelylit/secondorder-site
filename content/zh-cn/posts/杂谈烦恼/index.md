@@ -15,7 +15,7 @@ categories:
 
 我说我感受到社会道德整体在下滑，说的是人们更多地在关注外在和表象，而且不认为外在和表象是内在和核心的显现（图里颜色越深的层级越靠近核心）。当问到物质、能量、生命和意志从何而生，人们多诉诸于科学、哲学、神秘力量或是流行的虚妄观念。科学的许多结论并不比科学这两个字本身显得更科学。流行的虚妄观念如一剂镇定剂，给了人们抱团取暖，寻找认同感的力量。我大概是因为近两年圣贤书读得多了起来，整天跟故去的人来往，大概忘记了活着的人为何而活着。
 
-[![civilization-architecture-res](http://mjm1990.com/wp-content/uploads/2019/09/civilization-architecture-res-300x229.png)](http://mjm1990.com/wp-content/uploads/2019/09/civilization-architecture-res.png)
+[![civilization-architecture-res](/wp-content/uploads/2019/09/civilization-architecture-res-300x229.png)](/wp-content/uploads/2019/09/civilization-architecture-res.png)
 
 文明的体系结构 - 颜色越浅越虚幻，颜色越深越贴近无可言说之实在
 

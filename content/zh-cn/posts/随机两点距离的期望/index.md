@@ -115,7 +115,7 @@ $$0\\le X\_1 \\le 1, 0\\le X\_2 \\le 1$$
 
 事件所在的样本空间为单位正方形，事件发生区域为二维图像上的一块面积，如图所示灰色区域。
 
-[![053E930C-6CB3-443B-975F-ADEB1549DDEF](http://mjm1990.com/wp-content/uploads/2019/08/053E930C-6CB3-443B-975F-ADEB1549DDEF.png)](http://mjm1990.com/wp-content/uploads/2019/08/053E930C-6CB3-443B-975F-ADEB1549DDEF.png)
+[![053E930C-6CB3-443B-975F-ADEB1549DDEF](/wp-content/uploads/2019/08/053E930C-6CB3-443B-975F-ADEB1549DDEF.png)](/wp-content/uploads/2019/08/053E930C-6CB3-443B-975F-ADEB1549DDEF.png)
 
 令\\(y=X\_2, x=X\_1\\)用积分的方法求灰色区域的面积为
 
