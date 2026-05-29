@@ -3,6 +3,7 @@ baseurl: https://secondorder.net
 title: 有点稳 (Second Order)
 theme: stack
 paginate: 10
+summaryLength: 80
 defaultContentLanguage: zh-cn
 
 languages:
