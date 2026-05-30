@@ -1,9 +1,10 @@
 ---
 title: "公开密钥基础设施图解"
 date: 2016-09-30
-categories: 
+categories:
+  - "engineering"
+tags:
   - "网络安全"
-tags: 
   - "pki"
   - "公开密钥"
   - "公开密钥基础设施"

@@ -1,7 +1,9 @@
 ---
 title: "项目文档管理纲要"
 date: 2023-09-28
-categories: 
+categories:
+  - "engineering"
+tags:
   - "实践所得"
 ---
 
@@ -23,7 +25,7 @@ categories:
 
 <figcaption>
 
-项目文档管理纲要  
+项目文档管理纲要
 \[1\] 亚马逊领导利准则：https://amazon.jobs/content/en/our-workplace/leadership-principles \[2\]项目阶段：启动、计划、执行、监控、执行。https://www.atlassian.com/zh/work-management/project-management/phases \[3\] 版本控制：结构性的调整，修改大版本号。局部内容的变动，修改小版本号。\[4\] 主导角色：Software Development Manager (SDM), Software Development Engineer (SDE), Product Manager – Technical (PMT), Technical Program Manager (TPM)
 
 </figcaption>

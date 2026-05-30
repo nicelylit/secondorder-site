@@ -1,7 +1,9 @@
 ---
 title: "来去匆匆"
 date: 2014-08-17
-categories: 
+categories:
+  - "writing"
+tags:
   - "生活小记"
 ---
 

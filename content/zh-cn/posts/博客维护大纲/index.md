@@ -1,9 +1,10 @@
 ---
 title: "博客维护大纲"
 date: 2023-01-25
-categories: 
+categories:
+  - "engineering"
+tags:
   - "个人博客"
-tags: 
   - "个人站点"
   - "维护"
 ---

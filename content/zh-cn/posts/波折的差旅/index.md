@@ -1,7 +1,9 @@
 ---
 title: "波折的差旅"
 date: 2025-03-09
-categories: 
+categories:
+  - "writing"
+tags:
   - "essay"
 ---
 

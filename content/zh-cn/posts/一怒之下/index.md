@@ -1,7 +1,9 @@
 ---
 title: "一怒之下"
 date: 2024-02-03
-categories: 
+categories:
+  - "writing"
+tags:
   - "人生感悟"
   - "生活小记"
 ---

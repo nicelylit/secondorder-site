@@ -1,10 +1,11 @@
 ---
 title: "尾递归的启示"
 date: 2017-08-19
-categories: 
+categories:
+  - "engineering"
+tags:
   - "组合算法"
   - "阅读感想"
-tags: 
   - "tail-recursion"
   - "尾递归"
 ---

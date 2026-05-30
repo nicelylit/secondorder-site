@@ -1,7 +1,9 @@
 ---
 title: "两个物体的简谐振动"
 date: 2017-01-04
-categories: 
+categories:
+  - "engineering"
+tags:
   - "经典物理"
 ---
 

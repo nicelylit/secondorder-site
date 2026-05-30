@@ -1,7 +1,9 @@
 ---
 title: "图灵停机问题的一个简单论述"
 date: 2017-05-21
-categories: 
+categories:
+  - "engineering"
+tags:
   - "阅读感想"
 ---
 

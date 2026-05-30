@@ -1,7 +1,9 @@
 ---
 title: "火车窗外"
 date: 2017-02-01
-categories: 
+categories:
+  - "engineering"
+tags:
   - "实践所得"
 ---
 

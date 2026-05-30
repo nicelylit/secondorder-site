@@ -1,7 +1,9 @@
 ---
 title: "换工作小记"
 date: 2024-09-16
-categories: 
+categories:
+  - "writing"
+tags:
   - "生活小记"
 ---
 

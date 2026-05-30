@@ -1,9 +1,10 @@
 ---
 title: "公开密钥加密在SSH远程登录中的应用"
 date: 2016-10-12
-categories: 
+categories:
+  - "engineering"
+tags:
   - "网络安全"
-tags: 
   - "ssh"
   - "公开密钥"
   - "口令认证"

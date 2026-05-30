@@ -1,7 +1,9 @@
 ---
 title: "随机两点距离的期望"
 date: 2019-08-17
-categories: 
+categories:
+  - "engineering"
+tags:
   - "概率统计"
 ---
 

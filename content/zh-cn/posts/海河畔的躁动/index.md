@@ -1,7 +1,9 @@
 ---
 title: "海河畔的躁动"
 date: 2016-07-11
-categories: 
+categories:
+  - "writing"
+tags:
   - "生活小记"
 ---
 

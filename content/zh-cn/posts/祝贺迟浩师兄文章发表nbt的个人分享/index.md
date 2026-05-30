@@ -1,7 +1,9 @@
 ---
 title: "参加工作以来的成长（二）"
 date: 2023-09-27
-categories: 
+categories:
+  - "writing"
+tags:
   - "人生感悟"
   - "生活小记"
 ---
@@ -14,8 +16,8 @@ categories:
 
 我阅读了发表文章的正文部分，短短的三页，信息浓度很高。文章最令我激动的部分，不是鉴定到的肽谱匹配数、肽段数、肽段序列远远地甩开了其它的7个引擎，而是文中清晰的评测方法和评测指标得到了反复地应用。我摘引了其中的四个最精彩的句子如下：
 
-1. “Given the design of this dataset, if a PSM identification is estimated to be correct for an unlabeled peptide, the corresponding precursor ions with 15N or 13C labeling should generally be observed in full mass scans and valid quantitation ratios should be obtained."  
-    "Generally, a smaller percentage of NaN ratio results indicates higher precision, and precision can be estimated independently of the target-decoy approach via the percentage of NaN ratio results."  
+1. “Given the design of this dataset, if a PSM identification is estimated to be correct for an unlabeled peptide, the corresponding precursor ions with 15N or 13C labeling should generally be observed in full mass scans and valid quantitation ratios should be obtained."
+    "Generally, a smaller percentage of NaN ratio results indicates higher precision, and precision can be estimated independently of the target-decoy approach via the percentage of NaN ratio results."
     "…, indicating that the PSMs from the extended search space of Open-pFind were also highly credible. Notably, the metabolic labelling technique also helped to identify why spectra are misidentified."
 
 3. "A total of 1,259,215 distinct peptides were retained, corresponding to 548,371 distinct peptide sequences, which was ~87.2% more than what was reported originally (~293,000). These indicate that ~10-20% of cysteines in all of the identified peptides were not modified by carbamindomethylation, as would usually be expected."

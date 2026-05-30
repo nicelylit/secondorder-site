@@ -1,7 +1,9 @@
 ---
 title: "求知欲"
 date: 2019-09-06
-categories: 
+categories:
+  - "writing"
+tags:
   - "人生感悟"
 ---
 

@@ -1,7 +1,9 @@
 ---
 title: "骤雨"
 date: 2012-05-19
-categories: 
+categories:
+  - "writing"
+tags:
   - "生活小记"
 ---
 

@@ -1,7 +1,9 @@
 ---
 title: "孤独"
 date: 2019-02-20
-categories: 
+categories:
+  - "writing"
+tags:
   - "人生感悟"
 ---
 

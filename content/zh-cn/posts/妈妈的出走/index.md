@@ -1,7 +1,9 @@
 ---
 title: "妈妈的出走"
 date: 2023-09-27
-categories: 
+categories:
+  - "writing"
+tags:
   - "生活小记"
 ---
 

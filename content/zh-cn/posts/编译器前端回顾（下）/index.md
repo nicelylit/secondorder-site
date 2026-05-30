@@ -1,7 +1,9 @@
 ---
 title: "编译器前端回顾（下）"
 date: 2020-08-09
-categories: 
+categories:
+  - "engineering"
+tags:
   - "阅读感想"
 ---
 

@@ -1,7 +1,9 @@
 ---
 title: "博客标志故事"
 date: 2023-01-26
-categories: 
+categories:
+  - "writing"
+tags:
   - "个人博客"
   - "生活小记"
 ---

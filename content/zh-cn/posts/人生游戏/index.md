@@ -1,7 +1,9 @@
 ---
 title: "人生游戏"
 date: 2019-10-17
-categories: 
+categories:
+  - "writing"
+tags:
   - "人生感悟"
 ---
 

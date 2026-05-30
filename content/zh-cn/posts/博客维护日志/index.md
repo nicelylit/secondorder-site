@@ -1,7 +1,9 @@
 ---
 title: "博客维护日志"
 date: 2023-01-25
-categories: 
+categories:
+  - "engineering"
+tags:
   - "个人博客"
 ---
 

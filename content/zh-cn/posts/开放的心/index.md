@@ -1,7 +1,9 @@
 ---
 title: "开放的心"
 date: 2020-01-21
-categories: 
+categories:
+  - "writing"
+tags:
   - "人生感悟"
 ---
 

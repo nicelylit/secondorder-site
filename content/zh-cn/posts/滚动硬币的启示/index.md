@@ -1,7 +1,9 @@
 ---
 title: "滚动硬币的启示"
 date: 2018-01-23
-categories: 
+categories:
+  - "engineering"
+tags:
   - "阅读感想"
 ---
 

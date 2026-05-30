@@ -1,7 +1,9 @@
 ---
 title: "关于分科思维的一些想法"
 date: 2022-11-26
-categories: 
+categories:
+  - "writing"
+tags:
   - "认识方法"
 ---
 

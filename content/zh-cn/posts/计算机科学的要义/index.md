@@ -1,7 +1,9 @@
 ---
 title: "计算机科学的要义"
 date: 2019-06-15
-categories: 
+categories:
+  - "engineering"
+tags:
   - "认识方法"
 ---
 

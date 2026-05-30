@@ -1,7 +1,9 @@
 ---
 title: "如何快乐"
 date: 2012-03-28
-categories: 
+categories:
+  - "writing"
+tags:
   - "人生感悟"
 ---
 

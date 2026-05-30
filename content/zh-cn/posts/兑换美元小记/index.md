@@ -1,7 +1,9 @@
 ---
 title: "兑换美元小记"
 date: 2017-04-04
-categories: 
+categories:
+  - "writing"
+tags:
   - "essay"
 ---
 

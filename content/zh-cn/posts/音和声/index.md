@@ -1,7 +1,9 @@
 ---
 title: "音和声"
 date: 2015-01-08
-categories: 
+categories:
+  - "writing"
+tags:
   - "阅读感想"
 ---
 

@@ -1,7 +1,9 @@
 ---
 title: "CSS实现垂直居中"
 date: 2015-11-01
-categories: 
+categories:
+  - "engineering"
+tags:
   - "软件开发"
 ---
 

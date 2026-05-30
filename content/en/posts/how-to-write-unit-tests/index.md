@@ -1,8 +1,10 @@
 ---
 title: "How to Write Unit Tests"
 date: 2017-05-23
-categories: 
-  - "软件开发"
+categories:
+  - "engineering"
+tags:
+  - "Software Development"
 ---
 
 This is not an article that guides you to setup a concrete unit test example. It is about discussing the basic principles, including the motivation of writing unit tests, the concepts from popular unit testing frameworks, and the thinking on what ideal unit tests look like. It will give beginners a good foundation on learning and writing unit tests in the future.

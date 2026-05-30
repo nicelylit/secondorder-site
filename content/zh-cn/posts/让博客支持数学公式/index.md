@@ -1,7 +1,9 @@
 ---
 title: "让博客支持数学公式"
 date: 2015-02-05
-categories: 
+categories:
+  - "engineering"
+tags:
   - "个人博客"
 ---
 

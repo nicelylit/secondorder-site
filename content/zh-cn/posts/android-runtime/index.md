@@ -1,7 +1,9 @@
 ---
 title: "Android Runtime"
 date: 2016-12-07
-categories: 
+categories:
+  - "engineering"
+tags:
   - "android"
 ---
 

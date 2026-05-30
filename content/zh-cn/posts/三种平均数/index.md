@@ -1,7 +1,9 @@
 ---
 title: "三种平均数"
 date: 2025-08-12
-categories: 
+categories:
+  - "engineering"
+tags:
   - "essay"
 ---
 

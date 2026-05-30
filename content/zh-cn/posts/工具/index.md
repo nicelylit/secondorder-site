@@ -1,7 +1,9 @@
 ---
 title: "有关工具的思考"
 date: 2023-02-11
-categories: 
+categories:
+  - "engineering"
+tags:
   - "实践所得"
 ---
 

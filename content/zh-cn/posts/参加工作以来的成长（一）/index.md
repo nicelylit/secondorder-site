@@ -1,7 +1,9 @@
 ---
 title: "参加工作以来的成长（一）"
 date: 2023-09-27
-categories: 
+categories:
+  - "writing"
+tags:
   - "人生感悟"
   - "生活小记"
 ---

@@ -1,7 +1,9 @@
 ---
 title: "全触分布"
 date: 2018-09-16
-categories: 
+categories:
+  - "engineering"
+tags:
   - "概率统计"
 ---
 

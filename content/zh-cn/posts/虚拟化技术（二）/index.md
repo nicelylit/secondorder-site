@@ -1,7 +1,9 @@
 ---
 title: "虚拟化技术（二）"
 date: 2025-05-31
-categories: 
+categories:
+  - "engineering"
+tags:
   - "technique"
   - "platform"
 ---

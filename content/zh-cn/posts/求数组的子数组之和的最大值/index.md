@@ -1,10 +1,11 @@
 ---
 title: "求数组的子数组之和的最大值"
 date: 2017-08-20
-categories: 
+categories:
+  - "engineering"
+tags:
   - "组合算法"
   - "阅读感想"
-tags: 
   - "tail-recursion"
   - "尾递归"
 ---

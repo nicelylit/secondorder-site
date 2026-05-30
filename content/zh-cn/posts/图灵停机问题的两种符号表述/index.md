@@ -1,7 +1,9 @@
 ---
 title: "图灵停机问题的两种符号表述"
 date: 2017-12-09
-categories: 
+categories:
+  - "engineering"
+tags:
   - "阅读感想"
 ---
 

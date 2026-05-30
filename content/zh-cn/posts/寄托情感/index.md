@@ -1,7 +1,9 @@
 ---
 title: "寄托情感"
 date: 2012-04-12
-categories: 
+categories:
+  - "writing"
+tags:
   - "人生感悟"
 ---
 

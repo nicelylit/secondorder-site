@@ -1,9 +1,10 @@
 ---
 title: "数字签名在安卓包发布中的应用"
 date: 2016-10-11
-categories: 
+categories:
+  - "engineering"
+tags:
   - "网络安全"
-tags: 
   - "digital-certificate"
   - "digital-signature"
   - "identity-certificate"

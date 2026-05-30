@@ -1,7 +1,9 @@
 ---
 title: "如何追求幸福"
 date: 2023-09-27
-categories: 
+categories:
+  - "writing"
+tags:
   - "人生感悟"
 ---
 

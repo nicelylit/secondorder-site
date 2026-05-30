@@ -1,9 +1,10 @@
 ---
 title: "WordPress的插件机制"
 date: 2016-08-07
-categories: 
+categories:
+  - "engineering"
+tags:
   - "设计模式"
-tags: 
   - "hook"
   - "plugins"
   - "wordpress"
@@ -49,7 +50,7 @@ did\_action用于检查某个钩子是否执行过，执行过的钩子都会在
 function show_hooks_order() {
     print_r( $GLOBALS['wp_actions'] );
 }
-add_action( 'shutdown', 'show_hooks_order' 
+add_action( 'shutdown', 'show_hooks_order'
 ```
 
 了解有哪些钩子和钩子的作用是什么，除了直接查看源码外，Adam R Brown还汇总了历史上各个WordPress版本中[钩子词典](http://adambrown.info/p/wp_hooks)，也可以用作参考。

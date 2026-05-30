@@ -1,7 +1,9 @@
 ---
 title: "新年的道路"
 date: 2024-01-01
-categories: 
+categories:
+  - "writing"
+tags:
   - "生活小记"
 ---
 

@@ -1,7 +1,9 @@
 ---
 title: "放飞孔明灯"
 date: 2013-04-01
-categories: 
+categories:
+  - "writing"
+tags:
   - "生活小记"
 ---
 

@@ -1,7 +1,9 @@
 ---
 title: "WordPress站点加载慢的分析"
 date: 2015-01-08
-categories: 
+categories:
+  - "engineering"
+tags:
   - "个人博客"
 ---
 

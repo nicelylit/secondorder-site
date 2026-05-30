@@ -1,7 +1,9 @@
 ---
 title: "手工求方根求和求对数的朴素方法"
 date: 2017-02-27
-categories: 
+categories:
+  - "engineering"
+tags:
   - "essay"
 ---
 

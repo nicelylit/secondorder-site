@@ -1,7 +1,9 @@
 ---
 title: "杂乱的思绪"
 date: 2012-01-01
-categories: 
+categories:
+  - "writing"
+tags:
   - "生活小记"
 ---
 

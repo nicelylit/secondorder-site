@@ -1,7 +1,9 @@
 ---
 title: "丽江行随笔"
 date: 2015-10-10
-categories: 
+categories:
+  - "writing"
+tags:
   - "生活小记"
 ---
 

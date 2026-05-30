@@ -1,7 +1,9 @@
 ---
 title: "判定、构造和证明"
 date: 2021-06-14
-categories: 
+categories:
+  - "engineering"
+tags:
   - "阅读感想"
 ---
 

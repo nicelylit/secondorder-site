@@ -1,7 +1,9 @@
 ---
 title: "Git初识"
 date: 2015-05-06
-categories: 
+categories:
+  - "engineering"
+tags:
   - "technique"
 ---
 

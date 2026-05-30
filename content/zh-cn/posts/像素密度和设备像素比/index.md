@@ -1,7 +1,9 @@
 ---
 title: "像素密度和设备像素比"
 date: 2017-02-03
-categories: 
+categories:
+  - "engineering"
+tags:
   - "实践所得"
   - "移动媒体"
 ---

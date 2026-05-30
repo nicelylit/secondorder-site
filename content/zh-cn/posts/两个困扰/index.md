@@ -1,7 +1,9 @@
 ---
 title: "两个困扰"
 date: 2019-10-29
-categories: 
+categories:
+  - "writing"
+tags:
   - "人生感悟"
 ---
 

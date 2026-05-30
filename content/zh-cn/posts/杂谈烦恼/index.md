@@ -1,7 +1,9 @@
 ---
 title: "杂谈烦恼"
 date: 2019-09-21
-categories: 
+categories:
+  - "writing"
+tags:
   - "人生感悟"
 ---
 

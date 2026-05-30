@@ -1,7 +1,9 @@
 ---
 title: "对研究的一点想法"
 date: 2018-04-29
-categories: 
+categories:
+  - "writing"
+tags:
   - "实践所得"
 ---
 

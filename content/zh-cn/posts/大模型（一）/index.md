@@ -1,7 +1,9 @@
 ---
 title: "大模型（一）"
 date: 2025-08-15
-categories: 
+categories:
+  - "engineering"
+tags:
   - "technique"
   - "platform"
 ---

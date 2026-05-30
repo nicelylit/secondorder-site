@@ -1,9 +1,10 @@
 ---
 title: "初识log4j"
 date: 2016-08-09
-categories: 
+categories:
+  - "engineering"
+tags:
   - "软件工具"
-tags: 
   - "log4j"
 ---
 

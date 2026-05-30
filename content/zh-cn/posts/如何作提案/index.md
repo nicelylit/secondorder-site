@@ -1,7 +1,9 @@
 ---
 title: "如何作提案"
 date: 2023-09-27
-categories: 
+categories:
+  - "engineering"
+tags:
   - "实践所得"
 ---
 

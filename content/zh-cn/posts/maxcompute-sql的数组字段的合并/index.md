@@ -1,7 +1,9 @@
 ---
 title: "MaxCompute SQL的数组字段的合并"
 date: 2025-02-09
-categories: 
+categories:
+  - "engineering"
+tags:
   - "technique"
 ---
 
@@ -50,7 +52,7 @@ GROUP BY c1
 在MaxCompute SQL中，可以用`[LATERAL VIEW](https://help.aliyun.com/zh/maxcompute/user-guide/lateral-view)`语句结合`[EXPLODE](https://help.aliyun.com/zh/maxcompute/user-guide/explode?spm=a2c4g.11186623.help-menu-search-27797.d_0)`函数来实现。具体的代码可以参考：
 
 ```
-WITH test_table AS 
+WITH test_table AS
 (
     SELECT  's1' AS c1
             ,'d1' AS c2

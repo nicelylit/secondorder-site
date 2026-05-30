@@ -1,7 +1,9 @@
 ---
 title: "生命的难题"
 date: 2025-04-04
-categories: 
+categories:
+  - "writing"
+tags:
   - "essay"
 ---
 
