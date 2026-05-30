@@ -30,3 +30,13 @@
     margin: 0.75rem 0;
   }
 }
+
+/* Excerpt color fix (dark mode) */
+.article-excerpt {
+  color: var(--card-text-color-secondary);
+}
+
+/* 如果你发现亮色也不对，可以显式写两套，但通常不用 */
+html[data-scheme="dark"] .article-excerpt {
+  color: var(--card-text-color-secondary);
+}
