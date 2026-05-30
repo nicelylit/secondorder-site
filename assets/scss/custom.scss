@@ -1,0 +1,32 @@
+/* 文章正文区域：右侧浮动块，文字环绕 */
+.article-content .floatblock {
+  width: var(--floatblock-w, 320px);
+  max-width: 45%;
+  margin: 0.25rem 0 0.75rem 1.25rem;
+}
+
+.article-content .floatblock-left {
+  float: left;
+  margin: 0.25rem 1.25rem 0.75rem 0;
+}
+
+.article-content .floatblock-right {
+  float: right;
+}
+
+/* 浮动块内部：图片自适应 */
+.article-content .floatblock img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* 移动端：取消环绕，改为上下布局 */
+@media (max-width: 768px) {
+  .article-content .floatblock {
+    float: none !important;
+    max-width: 100%;
+    width: 100%;
+    margin: 0.75rem 0;
+  }
+}

@@ -14,7 +14,7 @@ tags:
 
 尾递归是指在过程调用中，递归调用过程本身的操作始终是过程的最后一步。举例来讲，计算阶乘的方法，根据定义，直接翻译成递归形式为
 
-```
+```python
 def factorial(n):
   if n == 1:
     return 1
@@ -24,7 +24,7 @@ def factorial(n):
 
 这个递归中，最后一步操作是乘法，而非调用过程本身，因而不是尾递归。转换成尾递归的形式如下
 
-```
+```python
 def factorial(n):
   return factorial_iter(1, 1, n)
 
@@ -57,7 +57,7 @@ def factorial_iter(product, counter, max_count):
 
 这个问题跟求组合数的问题非常类似，可以将原问题分解为两个子问题。第一，完全不用50美分兑换，用剩下的四种面值兑换给定额度的钱；第二，用一个50美分兑换，对于除去50美分剩下的钱再用五种面值去兑换。这两个子问题彼此互斥，所以求和就是原问题的解。用程序语言描述即为
 
-```
+```python
 def rec_count_change(amount):
 ```
 
@@ -67,7 +67,7 @@ def rec_count_change(amount):
 
 如果用表格记录所有可能子问题的结果，那么表格一定只有(amount+1)\*kinds\_of\_coins的大小，共有kinds\_of\_coins行，amount+1列。在求解表格中任何一个格子中的值时，都只依赖于前一行同列（kinds\_of\_coins-1, amount）与同行前面某列（kinds\_of\_coins, amount-first\_denomination(kinds\_of\_coins)）的值，如果我们逐行地填充表格，就不必要保存着整张表，而只需要一行的存储空间。这样的空间开销不会比非尾递归大，时间上要远好。想清楚了第一点技巧，还要想清第二点，也就是说，起始时候，amount从0开始，kinds\_of\_coins从1开始计算，到底是先固定amount为0不变，将所有的kinds\_of\_coins都算出来呢，还是相反将kinds\_of\_coins固定为1，而去计算出对应所有amount的值。其实在选择存储空间大小时候，就已经潜在回答了这个问题，我们选择了一行，即为后者。明白了改造尾递归的两个方面，改起算法来也不会非常困难。尾递归的解法为
 
-```
+```python
 def tail_rec_count_change(amount):
   return trcc(amount, 5, 0, 1, [0]*(amount+1))
 

@@ -78,4 +78,12 @@ Photoshop是修改图像尺寸和“像素密度”的有效工具，Mac上的Pr
 
 ### 参考链接
 
-\[1\] [Point (typography)](https://en.wikipedia.org/wiki/Point_\(typography\)) \[2\] [Photo print sizes](https://en.wikipedia.org/wiki/Photo_print_sizes) \[3\] [ISO 216](https://en.wikipedia.org/wiki/ISO_216) \[4\] [Image resolution guideline](https://support.apple.com/en-us/HT201495) \[5\] [Computer monitor DPI standards](https://en.wikipedia.org/wiki/Dots_per_inch#Computer_monitor_DPI_standards) \[6\] [Where does 96 DPI come from in Windows?](https://blogs.msdn.microsoft.com/fontblog/2005/11/08/where-does-96-dpi-come-from-in-windows/) \[7\] [DPI](https://technet.microsoft.com/en-us/library/ff716252.aspx) \[8\] [devicePixelRatio](http://www.quirksmode.org/blog/archives/2012/06/devicepixelrati.html) \[9\] [Supporting Multiple Screens](https://developer.android.google.cn/guide/practices/screens_support.html)
+- \[1\] [Point (typography)](https://en.wikipedia.org/wiki/Point_\(typography\))
+- \[2\] [Photo print sizes](https://en.wikipedia.org/wiki/Photo_print_sizes)
+- \[3\] [ISO 216](https://en.wikipedia.org/wiki/ISO_216)
+- \[4\] [Image resolution guideline](https://support.apple.com/en-us/HT201495)
+- \[5\] [Computer monitor DPI standards](https://en.wikipedia.org/wiki/Dots_per_inch#Computer_monitor_DPI_standards)
+- \[6\] [Where does 96 DPI come from in Windows?](https://blogs.msdn.microsoft.com/fontblog/2005/11/08/where-does-96-dpi-come-from-in-windows/)
+- \[7\] [DPI](https://technet.microsoft.com/en-us/library/ff716252.aspx)
+- \[8\] [devicePixelRatio](http://www.quirksmode.org/blog/archives/2012/06/devicepixelrati.html)
+- \[9\] [Supporting Multiple Screens](https://developer.android.google.cn/guide/practices/screens_support.html)

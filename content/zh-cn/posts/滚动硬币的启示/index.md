@@ -19,7 +19,8 @@ tags:
 
 如果选择了滚动硬币的圆心，观察其轨迹的变化，立刻能够得出圆心在半圈内整整转过了一周，自然箭头还是向上。如果选择了滚动硬币上其它的点，就不那么容易得出这个结论了，因为其它的点的轨迹是条心脏线。为此我写了动画模拟了整个过程。
 
-您的浏览器不支持Canvas API
+<script src="https://nicelylit.net/wp-content/themes/jeremysworld/js/coin-path.js?ver=6.1.9" id="coin-path-js"></script>
+<canvas id="coinPath" style="margin:auto;display:block;" width="400" height="400">您的浏览器不支持Canvas API</canvas>
 
 解决明白这个问题本身没有什么值得兴奋的，因为这是一个普通的中学生，甚至聪明的小学生就可以想明白的。真正值得兴奋的是我们能够比过去更加清晰地意识到选择好的研究对象的动机以及方法。
 

@@ -19,21 +19,29 @@ tags:
 
 图片的模型最简单，行内元素，限制高，宽会等比例缩放。假设要在高度为200px的块中放置一个高度不超过100px的图片，垂直居中可以这样写：
 
-```
+```css
 #middleWrapper {
-? height: 200px;
-? line-height: 200px;
+  height: 200px;
+  line-height: 200px;
+  border-color: black;
+  border-width: 1px;
+  border-style: solid;
 }
-#middleWrapper?> img {
-? vertical-align: middle;
-? max-height: 100px;
+#middleWrapper > img {
+  vertical-align: middle;
+  max-height: 100px;
 }
+```
+
+```html
 <div class="middleWrapper">
   <img src="/wp-content/uploads/2015/01/violin.jpg">
 </div>
 ```
 
-![](/wp-content/uploads/2015/01/violin.jpg)
+<div style="height: 200px; line-height: 200px; border-color: black; border-width: 1px; border-style: solid">
+  <img src="/wp-content/uploads/2015/01/violin.jpg" style="vertical-align: middle; max-height: 100px">
+</div>
 
 上面的代码中重要之处在于line-height恰好等于height，这样整个包含块就变成了一行，在单行内居中行内元素，只需要指定vertical-align是middle即可。
 
@@ -43,23 +51,37 @@ tags:
 
 这种情况与情形1类似，不同之处在于文字如果一行放不下会换行，当换出新的一行，文字便超出了包含块，这时通常的处理手法是将超出部分隐藏（overflow: hidden）。更加普遍的做法是设置样式属性white-space为nowrap不允许文字换行，并且将超出部分换用三个点代替（text-overflow: ellipsis）。下面的例子中，将内容超过一行的文本，垂直居中地放在高200px的包含块中，并且只显示一行。
 
-```
+```css
 #middleWrapper {
   height: 200px;
   line-height: 200px;
   text-overflow: ellipsis;
   overflow: hidden;
+  border-color: black;
+  border-width: 1px;
+  border-style: solid;
 }
 #middleWrapper > span {
   vertical-align: middle;
   white-space: nowrap;
 }
+```
+
+```html
 <div class="middleWrapper">
   <span>It is a truth universally acknowledged that a single man in possession of a good   fortune must be in want of a wife. However little known the feelings or views of such a man may be on his first entering a neighbourhood, this truth is so well fixed in the minds of the surrounding families, that he is considered as the rightful property of some one or other of their daughters.</span>
 </div>
 ```
 
-It is a truth universally acknowledged that a single man in possession of a good fortune must be in want of a wife. However little known the feelings or views of such a man may be on his first entering a neighbourhood, this truth is so well fixed in the minds of the surrounding families, that he is considered as the rightful property of some one or other of their daughters.
+<div style="height: 200px;
+  line-height: 200px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  border-color: black;
+  border-width: 1px;
+  border-style: solid">
+  <span style="vertical-align: middle; white-space: nowrap">It is a truth universally acknowledged that a single man in possession of a good   fortune must be in want of a wife. However little known the feelings or views of such a man may be on his first entering a neighbourhood, this truth is so well fixed in the minds of the surrounding families, that he is considered as the rightful property of some one or other of their daughters.</span>
+</div>
 
 注意white-space属性可以放在包含块中或是直接放在文本标签中均可，因为这个属性允许继承，并且只能作用在文本上。两个overflow属性却要放在包含块中，用户代理需要根据包含块的高度进行计算隐藏掉那一部分文字。值得一提的是text-overflow属性是CSS3中加入的新内容，主流浏览器都支持，但也有些例外，比如UC浏览器的Android手机版。
 
@@ -75,10 +97,13 @@ It is a truth universally acknowledged that a single man in possession of a good
 
 当一段文字行数不确定，且包含块的高度一定大于总行框高度时，需要将整段文字放在一个不限制高的行内块级元素中，像下面的写法一样：
 
-```
+```css
 #middleWrapper {
   height: 200px;
   line-height: 200px;
+  border-color: black;
+  border-width: 1px;
+  border-style: solid;
 }
 #middleWrapper > div {
   vertical-align: middle;
@@ -86,12 +111,24 @@ It is a truth universally acknowledged that a single man in possession of a good
   line-height: 1.5;
   text-align: justify;
 }
+```
+
+```html
 <div class="middleWrapper">
   <div>It is a truth universally acknowledged that a single man in possession of a good fortune must be in want of a wife. However little known the feelings or views of such a man may be on his first entering a neighbourhood, this truth is so well fixed in the minds of the surrounding families, that he is considered as the rightful property of some one or other of their daughters.</div>
 </div>
 ```
 
-It is a truth universally acknowledged that a single man in possession of a good fortune must be in want of a wife. However little known the feelings or views of such a man may be on his first entering a neighbourhood, this truth is so well fixed in the minds of the surrounding families, that he is considered as the rightful property of some one or other of their daughters.
+<div style="height: 200px;
+  line-height: 200px;
+  border-color: black;
+  border-width: 1px;
+  border-style: solid">
+  <div style="vertical-align: middle;
+  display: inline-block;
+  line-height: 1.5;
+  text-align: justify">It is a truth universally acknowledged that a single man in possession of a good fortune must be in want of a wife. However little known the feelings or views of such a man may be on his first entering a neighbourhood, this truth is so well fixed in the minds of the surrounding families, that he is considered as the rightful property of some one or other of their daughters.</div>
+</div>
 
 不同于单行元素的居中，多行元素的line-height需要重置成较小的值，上面例子中取了文字的1.5倍，远小于父级元素的200px。将块级元素变成行内块级元素也是关键。如果仍旧只是块级元素，即使充值了line-height也不会生效，因为块级元素的一行会去和父级包含块的一行去居中对齐。
 
@@ -99,18 +136,32 @@ It is a truth universally acknowledged that a single man in possession of a good
 
 另外有一种通行的做法是将要居中的内容放置在一个单元格中，这种方案可以应对以上所有情况。
 
-```
+```css
 #middleWrapper {
   height: 200px;
   line-height: 1.5;
   vertical-align: middle;
   display: table-cell;
+  border-color: black;
+  border-width: 1px;
+  border-style: solid;
 }
+```
+
+```html
 <div class="middleWrapper">
 It is a truth universally acknowledged that a single man in possession of a good fortune must be in want of a wife. However little known the feelings or views of such a man may be on his first entering a neighbourhood, this truth is so well fixed in the minds of the surrounding families, that he is considered as the rightful property of some one or other of their daughters.
 </div>
 ```
 
+<div style="height: 200px;
+  line-height: 1.5;
+  vertical-align: middle;
+  display: table-cell;
+  border-color: black;
+  border-width: 1px;
+  border-style: solid">
 It is a truth universally acknowledged that a single man in possession of a good fortune must be in want of a wife. However little known the feelings or views of such a man may be on his first entering a neighbourhood, this truth is so well fixed in the minds of the surrounding families, that he is considered as the rightful property of some one or other of their daughters.
+</div>
 
 此外，还有一些方法也可行，但显得不够优雅，比如设定上下的padding为某个固定值可以应对某些情形等。

@@ -18,13 +18,11 @@ tags:
 
 [![basics-of-public-key-infrastrature](/wp-content/uploads/2016/09/basics-of-public-key-infrastrature.png)](/wp-content/uploads/2016/09/basics-of-public-key-infrastrature.png)
 
- 
-
 A要通过网络将文件（Original File）发送给B，为了能让B安全收到，避免传输过程中被截获、窃听或伪造，目前相对安全的做法是图中描述的流程。
 
 A需要执行的操作：
 
-```
+```text
 (1) 用对称密钥（Symmetric Key）通过对称加密算法把文件加密成为密文文件（Encrypted File, or Cypher Text）；
 (2) 用B的公开密钥（Public Key）通过非对称加密算法把对称密钥加密成为加密的对称密钥（Encrypted Symmetric Key）；
 (3) 通过哈希算法生成文件的短摘要（Short Digest）；
@@ -36,7 +34,7 @@ A需要执行的操作：
 
 B收到A发来的文件需要执行的操作：
 
-```
+```text
 (1) 用自己的私有密钥对A发来的加密的对称密钥解密，获得解密的对称密钥（Decrypted Symmetric Key）；
 (2) 用解密的对称密钥解密密文文件，获得解密文件（Decrypted File）；
 (3) 用相同的哈希算法，生成解密文件的短摘要作为待测摘要（Tested Short Digest）；

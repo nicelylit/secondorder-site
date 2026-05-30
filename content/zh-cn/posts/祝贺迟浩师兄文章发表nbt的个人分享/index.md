@@ -19,8 +19,7 @@ tags:
 1. “Given the design of this dataset, if a PSM identification is estimated to be correct for an unlabeled peptide, the corresponding precursor ions with 15N or 13C labeling should generally be observed in full mass scans and valid quantitation ratios should be obtained."
     "Generally, a smaller percentage of NaN ratio results indicates higher precision, and precision can be estimated independently of the target-decoy approach via the percentage of NaN ratio results."
     "…, indicating that the PSMs from the extended search space of Open-pFind were also highly credible. Notably, the metabolic labelling technique also helped to identify why spectra are misidentified."
-
-3. "A total of 1,259,215 distinct peptides were retained, corresponding to 548,371 distinct peptide sequences, which was ~87.2% more than what was reported originally (~293,000). These indicate that ~10-20% of cysteines in all of the identified peptides were not modified by carbamindomethylation, as would usually be expected."
+2. "A total of 1,259,215 distinct peptides were retained, corresponding to 548,371 distinct peptide sequences, which was ~87.2% more than what was reported originally (~293,000). These indicate that ~10-20% of cysteines in all of the identified peptides were not modified by carbamindomethylation, as would usually be expected."
 
 第一个句子简短地给出了评测方法，第二个句子说明了评测指标该如何看。后面巧妙地将结果分为两步去应用评测方法，第一步是看无修饰和有四个基础修饰的情况，第二步是考虑所有修饰的情况。第三句更进一步，还说出了，对于这样的评测技术，不仅只在于给出鉴定结果的准确性，还能辅助分析为什么被错误鉴定。第四句是对整个引擎所带来价值的说明，另外也能够延伸出需要制定一些评测指标，让湿实验的质量和干实验的质量可以互相监督。
 

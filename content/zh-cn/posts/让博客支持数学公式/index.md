@@ -7,16 +7,19 @@ tags:
   - "个人博客"
 ---
 
-之前的解决方案通过JavaScript脚本将公式转换为图片，即使用[ASCIIMathTeXImg.js](/wp-content/uploads/2015/02/ASCIIMathTeXImg.js)，在<head></head>中引用如下的代码。
+之前的解决方案通过JavaScript脚本将公式转换为图片，即使用[ASCIIMathTeXImg.js](/wp-content/uploads/2015/02/ASCIIMathTeXImg.js)，在`<head></head>`中引用如下的代码。
 
-```
+```html
 <script type="text/javascript" src="<?php bloginfo('template_url'); ?>/js/ASCIIMathTeXImg.js">
+</script>
 ```
 
 后面Google时发现了MathJax，提供了更加强大的公式服务。直接引用下面的代码即可支持。
 
-```
+```html
 <script type="text/javascript"
+ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
 ```
 
 相比于第一种方式，第二种方式优势至少有两点：其一，加载的JavaScript脚本都是引用别人的链接，不会耗费自己托管服务器的流量；其二，功能更多，支持用户自定义，可以选择LaTex、MathML或者AsciiMath，解析结果也不再是图片，而是HTML、SVG或MathML。

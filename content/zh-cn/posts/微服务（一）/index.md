@@ -31,31 +31,19 @@ tags:
 典型的微服务组件可以从七个角度来看：
 
 1. 业务核心组件：服务实例、服务接口
-
-3. 通信组件：API网关、RPC通信（同步）、消息队列（异步）、定时任务（异步）、注册中心
-
-5. 数据管理组件：独立数据库、分布式缓存、时间流处理
-
-7. 运维监控组件：容器和编排、配置中心、日志与监控
-
-9. 安全组件：身份认证与授权、服务网格
-
-11. 弹性与容错组件：域名解析、负载均衡、限流器、熔断器、重试与降级
-
-13. 开发与交付组件：持续交付、基础设施即代码
+2. 通信组件：API网关、RPC通信（同步）、消息队列（异步）、定时任务（异步）、注册中心
+3. 数据管理组件：独立数据库、分布式缓存、时间流处理
+4. 运维监控组件：容器和编排、配置中心、日志与监控
+5. 安全组件：身份认证与授权、服务网格
+6. 弹性与容错组件：域名解析、负载均衡、限流器、熔断器、重试与降级
+7. 开发与交付组件：持续交付、基础设施即代码
 
 ## 参考阅读
 
 1. [什么是微服务？](https://aws.amazon.com/cn/microservices/)AWS
-
-3. [什么是微服务？](https://www.aliyun.com/getting-started/what-is/what-is-microservice)阿里云
-
-5. [微服务是什么？](https://www.ruanyifeng.com/blog/2022/04/microservice.html)阮一峰
-
-7. [什么是云原生？](https://www.amazonaws.cn/knowledge/what-is-cloud-native/)AWS
-
-9. [云原生架构](https://www.amazonaws.cn/knowledge/what-is-cloud-native/) AWS
-
-11. [什么是云原生？](https://www.aliyun.com/getting-started/what-is/what-is-cloud-native#3749b362e7doq)阿里云
-
-13. [什么是云原生？](https://cloud.google.com/learn/what-is-cloud-native?hl=zh-CN)Google Cloud
+2. [什么是微服务？](https://www.aliyun.com/getting-started/what-is/what-is-microservice)阿里云
+3. [微服务是什么？](https://www.ruanyifeng.com/blog/2022/04/microservice.html)阮一峰
+4. [什么是云原生？](https://www.amazonaws.cn/knowledge/what-is-cloud-native/)AWS
+5. [云原生架构](https://www.amazonaws.cn/knowledge/what-is-cloud-native/) AWS
+6. [什么是云原生？](https://www.aliyun.com/getting-started/what-is/what-is-cloud-native#3749b362e7doq)阿里云
+7. [什么是云原生？](https://cloud.google.com/learn/what-is-cloud-native?hl=zh-CN)Google Cloud

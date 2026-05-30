@@ -8,7 +8,11 @@ tags:
   - "生活小记"
 ---
 
-[![](/wp-content/uploads/2023/01/logo-story-300x150.png)](< https:=>)
+{{< floatblock pos="right" w="360px" class="brand-block" >}}
+<div style="text-align:center;">
+  <img src="/wp-content/uploads/2023/01/logo-story-300x150.png" alt="logo" style="max-width:320px; margin: 0 auto 12px;">
+</div>
+{{< /floatblock >}}
 
 Jeremy's World翻译成中文是吉里米的世界，取自《苏菲的世界》，博客搭建那段时间我刚好在读这本小书，格外喜欢，便用作了站点的标题。
 

@@ -22,7 +22,7 @@ tags:
 
 得到表2的数据，最直接的思路是通过`GROUP BY`进行分组聚合，c2列可以用过`COLLECT_SET`函数外加`ARRAY_JOIN`实现。对于c3列，需要先`SPLIT`成数组，然后再分组合并。查询[MaxCompute SQL的函数手册](https://help.aliyun.com/zh/maxcompute/user-guide/built-in-functions/?spm=a2c4g.11186623.help-menu-27797.d_2_1_3_2.ca5647a5Ye54gn&scm=20140722.H_455448._.OR_help-T_cn~zh-V_1)，在数组方面并没有这样的功能。随后看到`MAP_UNION`的键可以去重，转而想到把数组转换成字典，合并字典的键后，再提取键转为数组，具体的代码可以参考：
 
-```
+```sql
 WITH test_table AS (
     SELECT 's1' AS c1
            ,'d1' AS c2
@@ -49,9 +49,9 @@ GROUP BY c1
 | s1 | d2 | r1 |
 | s1 | d2 | r3 |
 
-在MaxCompute SQL中，可以用`[LATERAL VIEW](https://help.aliyun.com/zh/maxcompute/user-guide/lateral-view)`语句结合`[EXPLODE](https://help.aliyun.com/zh/maxcompute/user-guide/explode?spm=a2c4g.11186623.help-menu-search-27797.d_0)`函数来实现。具体的代码可以参考：
+在MaxCompute SQL中，可以用[`LATERAL VIEW`](https://help.aliyun.com/zh/maxcompute/user-guide/lateral-view)语句结合[`EXPLODE`](https://help.aliyun.com/zh/maxcompute/user-guide/explode?spm=a2c4g.11186623.help-menu-search-27797.d_0)函数来实现。具体的代码可以参考：
 
-```
+```sql
 WITH test_table AS
 (
     SELECT  's1' AS c1

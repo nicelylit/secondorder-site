@@ -7,7 +7,7 @@ tags:
   - "实践所得"
 ---
 
-> _2018年01月02日分享于pFinder邮件组，作为《[参加工作以来的成长（一）](https://mjm1990.com/article/%e5%8f%82%e5%8a%a0%e5%b7%a5%e4%bd%9c%e4%bb%a5%e6%9d%a5%e7%9a%84%e6%88%90%e9%95%bf%ef%bc%88%e4%b8%80%ef%bc%89)》的附件。_
+> _2018年01月02日分享于pFinder邮件组，作为《[参加工作以来的成长（一）]({{< relref "posts/参加工作以来的成长（一）/index.md" >}})》的附件。_
 
 高效快速地找到一个复杂系统中问题发生的根本原因，是每个工程师的必修课。当我们面对这样一些问题时，往往不知道复杂系统的全貌和所有细节，这种状况下应该怎么办？对于一个训练有素的工程师，肯定不是头脑发热，不知所措，或者到处去找人询问，而是从有限的问题本身出发，不断地反问自己，如果要找到问题的答案需要知道什么信息，层层地挖掘出更多的相关信息，从而找到问题的症结。这是一个结合深度搜索和广度搜索的技能，并且需要恰到好处的结合，想得太深可能会让自己陷入一个死胡同，关注的太广可能会让自己迷失在太多的细节当中，而忘记了来时的路，和最终要达成的目的。
 
@@ -53,39 +53,28 @@ tags:
 在百度中搜索以下两组关键词：
 
 - [安卓 预装应用 安装目录](https://www.baidu.com/s?wd=%E5%AE%89%E5%8D%93%20%E9%A2%84%E8%A3%85%E5%BA%94%E7%94%A8%20%E5%AE%89%E8%A3%85%E7%9B%AE%E5%BD%95&rsv_spt=1&rsv_iqid=0x816ee9100000c646&issp=1&f=8&rsv_bp=1&rsv_idx=2&ie=utf-8&rqlang=cn&tn=baiduhome_pg&rsv_enter=1&oq=%25E5%25AE%2589%25E5%258D%2593%2520%25E9%259D%259E%25E9%25A2%2584%25E8%25A3%2585%25E5%25BA%2594%25E7%2594%25A8%2520%25E5%25AE%2589%25E8%25A3%2585%25E7%259B%25AE%25E5%25BD%2595&inputT=9585&rsv_t=8174w5l%2Fz4iozxSft4mO9wSazB59pk51FAXCiujs89KnLK2upQfXvEXnvMQYt%2FPkt7P2&rsv_pq=801f451a0000d39a&rsv_sug3=46&bs=%E5%AE%89%E5%8D%93%20%E9%9D%9E%E9%A2%84%E8%A3%85%E5%BA%94%E7%94%A8%20%E5%AE%89%E8%A3%85%E7%9B%AE%E5%BD%95)
-
 - [安卓 应用 安装目录](https://www.baidu.com/s?wd=%E5%AE%89%E5%8D%93%20%E5%BA%94%E7%94%A8%20%E5%AE%89%E8%A3%85%E7%9B%AE%E5%BD%95&rsv_spt=1&rsv_iqid=0x816ee9100000c646&issp=1&f=8&rsv_bp=1&rsv_idx=2&ie=utf-8&rqlang=cn&tn=baiduhome_pg&rsv_enter=0&oq=%25E5%25AE%2589%25E5%258D%2593%2520%25E9%25A2%2584%25E8%25A3%2585%25E5%25BA%2594%25E7%2594%25A8%2520%25E5%25AE%2589%25E8%25A3%2585%25E7%259B%25AE%25E5%25BD%2595&inputT=1030&rsv_t=85c8VCn3jzp066CfUiu208IrrRmlbNuOrGBjNI1DB5Vn0KGoaushNVtF1aRY%2BmOjO4Nk&rsv_pq=aaef80ef0000d264&rsv_sug3=48&rsv_sug1=32&rsv_sug7=000&bs=%E5%AE%89%E5%8D%93%20%E9%A2%84%E8%A3%85%E5%BA%94%E7%94%A8%20%E5%AE%89%E8%A3%85%E7%9B%AE%E5%BD%95)
 
 在Bing上搜索以下三组关键词：
 
 - [Android preload application installation location](https://cn.bing.com/search?q=Android%20preload%20application%20installation%20location&qs=n&form=QBRE&sp=-1&pq=android%20preload%20application%20installation%20location&sc=0-49&sk=&cvid=262AD12124F8468AB2C9625DF9385E7D)
-
 - [Android application installation location](https://cn.bing.com/search?q=Android%20application%20installation%20location&qs=n&form=QBRE&sp=-1&pq=android%20application%20installation%20location&sc=1-41&sk=&cvid=72F99F60ADAB423EBCCE1C5BF4F8581F)
-
 - [Android application installation folder](https://cn.bing.com/search?q=Android%20application%20installation%20folder&qs=n&form=QBRE&sp=-1&pq=undefined&sc=0-39&sk=&cvid=529FDC60434249D8BA41ECAF27448B77)
 
 百度中第一组搜索关键词的头五名：
 
 - [怎样知道安卓系统上安装的应用程序其所在文件夹...\_百度知道](https://zhidao.baidu.com/question/501345661.html)
-
 - [安卓手机如何彻底删除预装应用\_百度经验](https://jingyan.baidu.com/article/a3f121e4d9e05cfc9052bbfb.html)
-
 - [教你怎么把安卓应用软件放到系统根目录system/app下 - 飞...\_博客园](https://www.cnblogs.com/feijian/p/5160392.html)
-
 - [安卓手机安装后的安装包文件怎么找\_百度经验](https://jingyan.baidu.com/article/ca2d939d3056d8eb6d31ce51.html)
-
 - [Android应用程序的安装位置 - CSDN博客](http://blog.csdn.net/snail_coder/article/details/20213069)
 
 百度中第二组搜素关键词的头五名：
 
 - [怎样知道安卓系统上安装的应用程序其所在文件夹...\_百度知道](https://zhidao.baidu.com/question/501345661.html)
-
 - [android APK应用安装过程以及默认安装路径 - CSDN博客](http://blog.csdn.net/vurtne_ye/article/details/41722583)
-
 - [Android开发出来的APP在手机的安装路径是? - CSDN博客](http://blog.csdn.net/libaineu2004/article/details/25247711)
-
 - [安卓软件安装目录在什么位置?-其他软件-ZOL问答堂](http://ask.zol.com.cn/q/1009414.html)
-
 - [各种APP的安装路径在哪? - Sony Xperia Z3/Compact 安...\_机锋论坛](http://bbs.gfan.com/android-8066580-1-1.html)
 
 快速的浏览10篇帖子，有些提到/data/app，有些提到/data/data，有些提到/system/app，还有些提到/system/priv-app。各个帖子试图去解决的问题不同，可能不是对我关心问题的正面回答，但不妨碍我将它们作为候选答案和新的搜索关键词。在浏览帖子的过程中，我了解到有人问过[安卓手机如何彻底删除预装应用\_百度经验](https://jingyan.baidu.com/article/a3f121e4d9e05cfc9052bbfb.html)，我获得的认识是系统应用可能很难删除。在浏览帖子[Android应用程序的安装位置 - CSDN博客](http://blog.csdn.net/snail_coder/article/details/20213069)时，我发现标题虽然相关，但内容在谈应用如何能放在外部空间，根据过去对存储分级的认识，我可以联想到默认的应用应该放在内部空间中，这时候勾起了我强烈的兴趣去了解安卓系统的存储结构。面对这种情况，如果时间充裕，不妨搜索一下，以满足自己的好奇心，如果时间不允许，最好就此打住，以免花太多的时间在拓展问题上。浏览的所有帖子中，[android APK应用安装过程以及默认安装路径 - CSDN博客](http://blog.csdn.net/vurtne_ye/article/details/41722583)的质量最高，不妨把这个链接留下，写到自己创建的笔记中。
@@ -93,9 +82,7 @@ tags:
 综合中文的搜索结果其实已经基本得到了问题3和4的答案，在笔记中做下记录。问题3的答案是/system/app和/system/priv-app，问题4的答案是/data/app。如果觉得这两个问题太小，也可以合并成一个笔记。为进一步确认我们的判断，阅读下英文的搜索结果，发现有人正面回答这个问题，比如下面的几个帖子：
 
 - [Where in the file system are applications installed?](https://android.stackexchange.com/questions/3002/where-in-the-file-system-are-applications-installed)
-
 - [where is .apk location for apps that are installed on sdcard?](https://stackoverflow.com/questions/10533030/where-is-apk-location-for-apps-that-are-installed-on-sdcard)
-
 - [Where does Android app package gets installed on phone](https://stackoverflow.com/questions/15322063/where-does-android-app-package-gets-installed-on-phone)
 
 确认得出的结论正确后，还需要到设备上实际操作一下，得到最终的确认。帖子[Where does Android app package gets installed on phone](https://stackoverflow.com/questions/15322063/where-does-android-app-package-gets-installed-on-phone)中的一个回答者提到了adb shell pm list packages -f这条命令，去执行一下，并且在笔记中做记录。
@@ -123,7 +110,7 @@ Difference /data/app /system/app Android
 
 问题答案找到这里，我虽然只能回答第一个大问题的3个小问题，但是似乎已经距离找到答案很近了。我已经将可能出问题的范围缩小到了广播接收器和权限，外加一个条件就是个推，于是我兴奋地去个推包的AndroidManifest.xml中找所有的广播接收器和权限声明语句。看到以下几行可疑度比较高的语句。
 
-```
+```xml
 <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
 <receiver android:name=".PushReceiver" >

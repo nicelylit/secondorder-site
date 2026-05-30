@@ -1,0 +1,7 @@
+{{- $pos := .Get "pos" | default "right" -}}
+{{- $w := .Get "w" | default "320px" -}}
+{{- $class := .Get "class" | default "" -}}
+
+<div class="floatblock floatblock-{{ $pos }} {{ $class }}" style="--floatblock-w: {{ $w }};">
+  {{ .Inner }}
+</div>

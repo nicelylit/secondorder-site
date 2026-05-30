@@ -66,7 +66,7 @@ In JUnit, a [runner](https://github.com/junit-team/junit4/blob/master/src/main/j
 
 A typical widely used parent runner is [BlockJUnit4ClassRunner](https://github.com/junit-team/junit4/blob/master/src/main/java/org/junit/runners/BlockJUnit4ClassRunner.java) (aka [JUnit4](https://github.com/junit-team/junit4/blob/master/src/main/java/org/junit/runners/JUnit4.java)). It is omitted by default. Its children are methods which are [FrameworkMethod](https://github.com/junit-team/junit4/blob/41d44734f41aba0cf6ba5a11ff5d32ffed155027/src/main/java/org/junit/runners/model/FrameworkMethod.java)s and which are annotated with @Test. Since a FrameworkMethod is not a runner, it can be treated as a leaf in a runner tree. The following three ways are equivalent when using this runner
 
-```
+```java
 public class FileOnceLoaderTest {
 }
 
@@ -172,8 +172,5 @@ Unit testing has limitations too. It cannot and should not test interactions bet
 
 I wrote a light-weight example for how to use JUnit + Hamcrest + Mockito + PowerMock + Spring Test Framework + Jacoco. Unit tests in this example follows best practices I stated above. If you are interested in it, check [this link](https://github.com/jeremy1990/UnitTestsJudgeLib).
 
- 
-
-[\[1\]](#_ftnref1) Programming language beginners may think ‘private’, ‘final’, ‘static’ as language specific stuffs, but they actually stand for some engineering solutions for factual problems.
-
-[\[2\]](#_ftnref2) Important concepts are _italicized_ and each word is in **_bold_** for the first time of occurrence.
+- [\[1\]](#_ftnref1) Programming language beginners may think ‘private’, ‘final’, ‘static’ as language specific stuffs, but they actually stand for some engineering solutions for factual problems.
+- [\[2\]](#_ftnref2) Important concepts are _italicized_ and each word is in **_bold_** for the first time of occurrence.
