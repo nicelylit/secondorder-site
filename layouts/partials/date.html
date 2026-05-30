@@ -1,0 +1,10 @@
+{{- $page := .Page -}}
+{{- $t := .Time -}}
+
+{{- $lang := lower ($page.Site.Language.Lang | default $page.Lang | default $page.Site.LanguageCode) -}}
+
+{{- if hasPrefix $lang "zh" -}}
+  {{- $t | time.Format "2006年1月2日" -}}
+{{- else -}}
+  {{- $t | time.Format "Jan 2, 2006" -}}
+{{- end -}}
