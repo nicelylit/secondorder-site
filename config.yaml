@@ -1,5 +1,5 @@
 # config.yaml
-baseurl: https://secondorder.net
+baseurl: https://blog.nicelylit.net
 title: 有点稳 (Second Order)
 theme: stack
 paginate: 10
@@ -180,7 +180,8 @@ params:
             - type: search
             - type: archives
             - type: tag-cloud
-
+        page:
+            - type: toc
 outputs:
     home:
         - HTML
