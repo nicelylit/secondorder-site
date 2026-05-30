@@ -33,5 +33,10 @@ lastmod = "2025-04-05T00:56:00+08:00"
 
 * * *
 
-[知乎回答](https://www.zhihu.com/people/nicelylit/answers) | [豆瓣主页](https://www.douban.com/people/spheroid/?_i=3772051LCt0rMO) | [稀土掘金](https://juejin.cn/user/3846531210308531) | [小红书](https://www.xiaohongshu.com/user/profile/58bf76da82ec3927f31a0d72)
-nicelylit@outlook.com
+<p style="text-align: center;">
+    <a href="https://www.zhihu.com/people/nicelylit/answers">知乎回答</a>
+     | <a href="https://www.douban.com/people/spheroid/?_i=3772051LCt0rMO">豆瓣主页</a>
+     | <a href="https://www.xiaohongshu.com/user/profile/58bf76da82ec3927f31a0d72">小红书</a>
+    <br/>
+    nicelylit@outlook.com
+</p>
