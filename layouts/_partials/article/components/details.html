@@ -43,6 +43,18 @@
     {{ $showTranslations := $Page.IsTranslated }}
     {{ $showTags := and $Page.Site.Params.Article.List.ShowTags ($Page.GetTerms "tags") $IsList }}
 
+    {{- /* Reading time: use char-based estimate for CJK, Hugo ReadingTime otherwise */ -}}
+    {{- $lang := lower $Page.Lang -}}
+    {{- $isCJK := or (hasPrefix $lang "zh") (eq $lang "ja") (eq $lang "ko") -}}
+
+    {{- $readingMinutes := $Page.ReadingTime -}}
+    {{- if $isCJK -}}
+        {{- $chars := len $Page.Plain -}}
+        {{- $cpm := 450 -}} {{/* 中文每分钟字符数：你可以改成 300/400/500... */}}
+        {{- $readingMinutes = div (add $chars (sub $cpm 1)) $cpm -}} {{/* 向上取整 */}}
+    {{- end -}}
+    {{- $readingMinutes = math.Max 1 $readingMinutes -}}
+
     {{ if or $showTime $showTranslations $showTags }}
     <footer class="article-meta">
         {{ if $showTime }}
@@ -57,7 +69,7 @@
                 {{ if $showReadingTime }}
                     {{ partial "helper/icon" "clock" }}
                     <time class="article-time--reading">
-                        {{ T "article.readingTime" $Page.ReadingTime }}
+                        {{ T "article.readingTime" (dict "Count" $readingMinutes) }}
                     </time>
                 {{ end }}
             </div>
