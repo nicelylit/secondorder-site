@@ -36,7 +36,7 @@ lastmod = "2025-04-05T00:56:00+08:00"
 <p style="text-align: center;">
     <a href="https://www.zhihu.com/people/nicelylit/answers">知乎回答</a>
      | <a href="https://www.douban.com/people/spheroid/?_i=3772051LCt0rMO">豆瓣主页</a>
-     | <a href="https://www.xiaohongshu.com/user/profile/58bf76da82ec3927f31a0d72">小红书</a>
+     | <a href="https://www.xiaohongshu.com/user/profile/654e12c1000000000802d266">小红书</a>
     <br/>
-    nicelylit@outlook.com
+    secondorder11@outlook.com
 </p>
