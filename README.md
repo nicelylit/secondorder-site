@@ -2,11 +2,9 @@
 
 A personal blog built with [Hugo](https://gohugo.io/) and the [Stack theme](https://github.com/CaiJimmy/hugo-theme-stack).
 
-**Site:** [nicelylit.net](https://nicelylit.net) *(Currently under construction; migrating from nicelylit.net)*
+**Site:** [blog.nicelylit.net](https://blog.nicelylit.net)
 
 ## Overview
-
-This secondorder.net site is currently **under construction**. It represents a significant upgrade and migration from the previous [nicelylit.net](https://nicelylit.net). While the original site was Chinese-only, this new version introduces **bilingual support** (Chinese and English) and an improved structure.
 
 The site documents real-world problems and fundamental methods in software engineering, alongside reflections on growth, observation, and introspection beyond code.
 
@@ -16,9 +14,13 @@ The site documents real-world problems and fundamental methods in software engin
 - **Categories:**
   - **Engineering (工程):** Problems, Methods, and Reflections in Software Engineering.
   - **Writing (随笔):** Thinking, Reading, Living, and Practice.
-- **Search:** Powered by Pagefind for fast, client-side search.
+- **Search:** Uses Stack’s built-in search page.
+- **Comments**: giscus powered by GitHub Discussions.
 - **Math Support:** LaTeX rendering for mathematical expressions.
 - **Responsive Design:** Optimized for mobile and desktop using the Stack theme.
+- **Analytics**: Baidu site statistics integrated, English version TBD.
+- **Deployment**: CI builds on push and syncs the generated site to an OSS bucket.
+- **CDN**: Speedup with Aliyun CDN for visits from CN, global speedup TBD.
 
 ## Getting Started
 
@@ -38,11 +40,6 @@ The site documents real-world problems and fundamental methods in software engin
 2. Initialize the theme submodule:
    ```bash
    git submodule update --init --recursive
-   ```
-
-3. Install dependencies (if any):
-   ```bash
-   npm install
    ```
 
 ### Development
