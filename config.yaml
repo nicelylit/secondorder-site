@@ -182,6 +182,24 @@ params:
             - type: tag-cloud
         page:
             - type: toc
+
+    comments:
+        enabled: true
+        provider: giscus
+        giscus:
+            repo: nicelylit/secondorder-site
+            repoID: R_kgDOSmZhMQ
+            category: Comments
+            categoryID: DIC_kwDOSmZhMc4C-W84
+            mapping: pathname
+            strict: "0"
+            reactionsEnabled: "1"
+            emitMetadata: "0"
+            inputPosition: bottom
+            theme: preferred_color_scheme
+            lang: zh-CN
+            loading: lazy
+
 outputs:
     home:
         - HTML
