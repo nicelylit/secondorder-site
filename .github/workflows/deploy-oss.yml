@@ -2,8 +2,12 @@ name: Deploy secondorder site to Aliyun OSS
 
 on:
   push:
-    branches: [ "main" ]   # 按你的分支改
+    branches: [ "main" ]
   workflow_dispatch:
+
+# Fix the issue that Node.js 20 actions are deprecated
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 permissions:
   contents: read
