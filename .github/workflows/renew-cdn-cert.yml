@@ -1,0 +1,120 @@
+name: Renew SSL Certificate and Deploy to Aliyun CDN
+
+on:
+  schedule:
+    # 每天 UTC 19:00（北京时间 03:00）
+    - cron: "0 19 * * *"
+  workflow_dispatch:
+
+# 跟你现有 workflow 一致：避免 Node 运行时兼容问题（虽然本流程基本不用 JS action）
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: renew-cdn-cert
+  cancel-in-progress: true
+
+jobs:
+  renew-and-deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      # 你的站点域名（要签发证书的域名）
+      CERT_DOMAIN: "blog.nicelylit.net"
+      # 阿里云 CDN 加速域名（控制台里配置的“加速域名”）
+      CDN_DOMAIN: "blog.nicelylit.net"
+      ACME_HOME: "${{ github.workspace }}/.acme.sh"
+      CERT_DIR: "${{ github.workspace }}/certs"
+      ALIYUN_REGION_ID: "cn-beijing"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Cache acme.sh home
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.ACME_HOME }}
+          key: acme-sh-${{ runner.os }}-${{ env.CERT_DOMAIN }}
+
+      - name: Install acme.sh
+        run: |
+          set -euo pipefail
+          curl https://get.acme.sh | sh -s email=secondorder11@outlook.com --home "${ACME_HOME}"
+          echo "${ACME_HOME}" >> "$GITHUB_PATH"
+
+      - name: Issue/Renew certificate (DNS Aliyun)
+        env:
+          Ali_Key: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}
+          Ali_Secret: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}
+        run: |
+          set -euo pipefail
+
+          # 直接 issue 即可：acme.sh 通常会判断是否需要续期
+          acme.sh --issue --server letsencrypt --dns dns_ali -d "${CERT_DOMAIN}" --home "${ACME_HOME}"
+
+      - name: Export certificate files
+        run: |
+          set -euo pipefail
+          mkdir -p "${CERT_DIR}"
+
+          acme.sh --install-cert -d "${CERT_DOMAIN}" \
+            --home "${ACME_HOME}" \
+            --key-file "${CERT_DIR}/private.key" \
+            --fullchain-file "${CERT_DIR}/fullchain.pem"
+
+          # 打印到期时间方便确认
+          openssl x509 -in "${CERT_DIR}/fullchain.pem" -noout -subject -issuer -enddate
+
+      - name: Install Aliyun Python SDK
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          pip install aliyun-python-sdk-core aliyun-python-sdk-cdn
+
+      - name: Update CDN certificate via Aliyun OpenAPI
+        env:
+          ALIYUN_ACCESS_KEY_ID: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}
+          ALIYUN_ACCESS_KEY_SECRET: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}
+          ALIYUN_REGION_ID: ${{ env.ALIYUN_REGION_ID }}
+          CDN_DOMAIN: ${{ env.CDN_DOMAIN }}
+          CERT_PATH: ${{ env.CERT_DIR }}/fullchain.pem
+          KEY_PATH: ${{ env.CERT_DIR }}/private.key
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import os, datetime
+          from aliyunsdkcore.client import AcsClient
+          from aliyunsdkcdn.request.v20180510.SetCdnDomainSSLCertificateRequest import SetCdnDomainSSLCertificateRequest
+
+          ak = os.environ["ALIYUN_ACCESS_KEY_ID"]
+          sk = os.environ["ALIYUN_ACCESS_KEY_SECRET"]
+          region = os.environ.get("ALIYUN_REGION_ID", "cn-hangzhou")
+          domain = os.environ["CDN_DOMAIN"]
+
+          with open(os.environ["CERT_PATH"], "r", encoding="utf-8") as f:
+              cert = f.read()
+          with open(os.environ["KEY_PATH"], "r", encoding="utf-8") as f:
+              key = f.read()
+
+          client = AcsClient(ak, sk, region)
+          req = SetCdnDomainSSLCertificateRequest()
+          req.set_accept_format("json")
+
+          req.set_DomainName(domain)
+          req.set_SSLProtocol("on")
+          req.set_CertName("auto-renew-" + datetime.datetime.utcnow().strftime("%Y%m%dT%H%M%SZ"))
+          req.set_SSLPub(cert)
+          req.set_SSLPri(key)
+
+          resp = client.do_action_with_exception(req)
+          print(resp.decode("utf-8"))
+          PY
+
+      - name: Cleanup
+        if: always()
+        run: |
+          rm -rf "${CERT_DIR}" || true
