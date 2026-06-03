@@ -56,7 +56,7 @@ jobs:
           python - <<'PY'
           import os, json, datetime, sys
           from aliyunsdkcore.client import AcsClient
-          from aliyunsdkcdn.request.v20180510.DescribeCdnDomainDetailRequest import DescribeCdnDomainDetailRequest
+          from aliyunsdkcdn.request.v20180510.DescribeDomainCertificateInfoRequest import DescribeDomainCertificateInfoRequest
 
           ak = os.environ["ALIYUN_ACCESS_KEY_ID"]
           sk = os.environ["ALIYUN_ACCESS_KEY_SECRET"]
@@ -65,43 +65,30 @@ jobs:
           threshold_days = int(os.environ.get("RENEW_BEFORE_DAYS", "7"))
 
           client = AcsClient(ak, sk, region)
-          req = DescribeCdnDomainDetailRequest()
+          req = DescribeDomainCertificateInfoRequest()
           req.set_accept_format("json")
           req.set_DomainName(domain)
 
           resp = client.do_action_with_exception(req)
           data = json.loads(resp.decode("utf-8"))
 
-          detail = data.get("DomainDetail", {}) if isinstance(data, dict) else {}
-          certinfos = detail.get("CertInfos") or detail.get("CertInfo") or {}
-
-          expire = None
-          candidate_keys = [
-            "CertExpireTime", "CertExpiredTime", "ExpireTime",
-            "certExpireTime", "certExpiredTime", "expireTime",
-          ]
-
-          if isinstance(certinfos, dict):
-            for k in candidate_keys:
-              if certinfos.get(k):
-                expire = certinfos.get(k)
-                break
-            if not expire and isinstance(certinfos.get("CertInfo"), list) and certinfos["CertInfo"]:
-              for k in candidate_keys:
-                if certinfos["CertInfo"][0].get(k):
-                  expire = certinfos["CertInfo"][0].get(k)
-                  break
-
-          if not expire:
-            print("ERROR: Could not find certificate expiry in DescribeCdnDomainDetail response.")
+          try:
+            expire = data["CertInfos"]["CertInfo"][0]["CertExpireTime"]
+          except Exception:
+            print("ERROR: Unexpected response shape; cannot read CertInfos.CertInfo[0].CertExpireTime")
             print("Top-level keys:", list(data.keys()) if isinstance(data, dict) else type(data))
-            print("DomainDetail keys:", list(detail.keys()) if isinstance(detail, dict) else type(detail))
+            # 打印一小段结构帮助排查（不打印证书内容）
+            if isinstance(data, dict) and "CertInfos" in data:
+              ci = data.get("CertInfos", {})
+              if isinstance(ci, dict):
+                print("CertInfos keys:", list(ci.keys()))
+                if isinstance(ci.get("CertInfo"), list) and ci["CertInfo"]:
+                  print("CertInfo[0] keys:", list(ci["CertInfo"][0].keys()))
             sys.exit(2)
 
           now = datetime.datetime.now(datetime.timezone.utc)
           exp = datetime.datetime.fromisoformat(expire.replace("Z", "+00:00"))
-          delta = exp - now
-          days_left = int(delta.total_seconds() // 86400)
+          days_left = int((exp - now).total_seconds() // 86400)
           should_renew = days_left <= threshold_days
 
           print(f"CDN cert expire: {expire} (days_left={days_left}, threshold={threshold_days})")
