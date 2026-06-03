@@ -2,11 +2,9 @@ name: Renew SSL Certificate and Deploy to Aliyun CDN
 
 on:
   schedule:
-    # 每天 UTC 19:00（北京时间 03:00）
     - cron: "0 19 * * *"
   workflow_dispatch:
 
-# 跟你现有 workflow 一致：避免 Node 运行时兼容问题（虽然本流程基本不用 JS action）
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
@@ -22,13 +20,12 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      # 你的站点域名（要签发证书的域名）
       CERT_DOMAIN: "blog.nicelylit.net"
-      # 阿里云 CDN 加速域名（控制台里配置的“加速域名”）
       CDN_DOMAIN: "blog.nicelylit.net"
       ACME_HOME: "${{ github.workspace }}/.acme.sh"
       CERT_DIR: "${{ github.workspace }}/certs"
       ALIYUN_REGION_ID: "cn-beijing"
+      RENEW_BEFORE_DAYS: "7"
 
     steps:
       - name: Checkout
@@ -40,23 +37,99 @@ jobs:
           path: ${{ env.ACME_HOME }}
           key: acme-sh-${{ runner.os }}-${{ env.CERT_DOMAIN }}
 
+      - name: Install Aliyun Python SDK
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          pip install aliyun-python-sdk-core aliyun-python-sdk-cdn
+
+      - name: Check CDN certificate expiration via OpenAPI
+        id: certcheck
+        env:
+          ALIYUN_ACCESS_KEY_ID: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}
+          ALIYUN_ACCESS_KEY_SECRET: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}
+          ALIYUN_REGION_ID: ${{ env.ALIYUN_REGION_ID }}
+          CDN_DOMAIN: ${{ env.CDN_DOMAIN }}
+          RENEW_BEFORE_DAYS: ${{ env.RENEW_BEFORE_DAYS }}
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import os, json, datetime, sys
+          from aliyunsdkcore.client import AcsClient
+          from aliyunsdkcdn.request.v20180510.DescribeCdnDomainDetailRequest import DescribeCdnDomainDetailRequest
+
+          ak = os.environ["ALIYUN_ACCESS_KEY_ID"]
+          sk = os.environ["ALIYUN_ACCESS_KEY_SECRET"]
+          region = os.environ.get("ALIYUN_REGION_ID", "cn-hangzhou")
+          domain = os.environ["CDN_DOMAIN"]
+          threshold_days = int(os.environ.get("RENEW_BEFORE_DAYS", "7"))
+
+          client = AcsClient(ak, sk, region)
+          req = DescribeCdnDomainDetailRequest()
+          req.set_accept_format("json")
+          req.set_DomainName(domain)
+
+          resp = client.do_action_with_exception(req)
+          data = json.loads(resp.decode("utf-8"))
+
+          detail = data.get("DomainDetail", {}) if isinstance(data, dict) else {}
+          certinfos = detail.get("CertInfos") or detail.get("CertInfo") or {}
+
+          expire = None
+          candidate_keys = [
+            "CertExpireTime", "CertExpiredTime", "ExpireTime",
+            "certExpireTime", "certExpiredTime", "expireTime",
+          ]
+
+          if isinstance(certinfos, dict):
+            for k in candidate_keys:
+              if certinfos.get(k):
+                expire = certinfos.get(k)
+                break
+            if not expire and isinstance(certinfos.get("CertInfo"), list) and certinfos["CertInfo"]:
+              for k in candidate_keys:
+                if certinfos["CertInfo"][0].get(k):
+                  expire = certinfos["CertInfo"][0].get(k)
+                  break
+
+          if not expire:
+            print("ERROR: Could not find certificate expiry in DescribeCdnDomainDetail response.")
+            print("Top-level keys:", list(data.keys()) if isinstance(data, dict) else type(data))
+            print("DomainDetail keys:", list(detail.keys()) if isinstance(detail, dict) else type(detail))
+            sys.exit(2)
+
+          now = datetime.datetime.now(datetime.timezone.utc)
+          exp = datetime.datetime.fromisoformat(expire.replace("Z", "+00:00"))
+          delta = exp - now
+          days_left = int(delta.total_seconds() // 86400)
+          should_renew = days_left <= threshold_days
+
+          print(f"CDN cert expire: {expire} (days_left={days_left}, threshold={threshold_days})")
+
+          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as f:
+            f.write(f"expire={expire}\n")
+            f.write(f"days_left={days_left}\n")
+            f.write(f"should_renew={'true' if should_renew else 'false'}\n")
+          PY
+
       - name: Install acme.sh
+        if: steps.certcheck.outputs.should_renew == 'true'
         run: |
           set -euo pipefail
           curl https://get.acme.sh | sh -s email=secondorder11@outlook.com --home "${ACME_HOME}"
           echo "${ACME_HOME}" >> "$GITHUB_PATH"
 
       - name: Issue/Renew certificate (DNS Aliyun)
+        if: steps.certcheck.outputs.should_renew == 'true'
         env:
           Ali_Key: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}
           Ali_Secret: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}
         run: |
           set -euo pipefail
-
-          # 直接 issue 即可：acme.sh 通常会判断是否需要续期
           acme.sh --issue --server letsencrypt --dns dns_ali -d "${CERT_DOMAIN}" --home "${ACME_HOME}"
 
       - name: Export certificate files
+        if: steps.certcheck.outputs.should_renew == 'true'
         run: |
           set -euo pipefail
           mkdir -p "${CERT_DIR}"
@@ -66,16 +139,10 @@ jobs:
             --key-file "${CERT_DIR}/private.key" \
             --fullchain-file "${CERT_DIR}/fullchain.pem"
 
-          # 打印到期时间方便确认
           openssl x509 -in "${CERT_DIR}/fullchain.pem" -noout -subject -issuer -enddate
 
-      - name: Install Aliyun Python SDK
-        run: |
-          set -euo pipefail
-          python -m pip install --upgrade pip
-          pip install aliyun-python-sdk-core aliyun-python-sdk-cdn
-
       - name: Update CDN certificate via Aliyun OpenAPI
+        if: steps.certcheck.outputs.should_renew == 'true'
         env:
           ALIYUN_ACCESS_KEY_ID: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}
           ALIYUN_ACCESS_KEY_SECRET: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}
@@ -113,6 +180,23 @@ jobs:
           resp = client.do_action_with_exception(req)
           print(resp.decode("utf-8"))
           PY
+
+      - name: No renewal needed
+        if: steps.certcheck.outputs.should_renew != 'true'
+        run: |
+          echo "No renewal needed. CDN cert expire='${{ steps.certcheck.outputs.expire }}', days_left='${{ steps.certcheck.outputs.days_left }}'."
+
+      - name: Summary
+        if: always()
+        run: |
+          {
+            echo "## CDN cert check"
+            echo ""
+            echo "- Domain: \`${{ env.CDN_DOMAIN }}\`"
+            echo "- Expire (API): \`${{ steps.certcheck.outputs.expire }}\`"
+            echo "- Days left: \`${{ steps.certcheck.outputs.days_left }}\`"
+            echo "- Should renew: \`${{ steps.certcheck.outputs.should_renew }}\`"
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Cleanup
         if: always()
