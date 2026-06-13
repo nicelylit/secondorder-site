@@ -76,31 +76,35 @@ jobs:
           AK: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}
           SK: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}
         run: |
-          # 从 Aliyun CDN 直接下载 ossutil v2（install.sh 装的是 v1，不含 api 子命令）
+          OSSUTIL_VER="2.3.0"
+          OSSUTIL_ARCH="amd64"
+
           curl -fsSL \
-            "https://gosspublic.alicdn.com/ossutil/v2/2.3.0/ossutil-2.3.0-linux-amd64.zip" \
+            "https://gosspublic.alicdn.com/ossutil/v2/${OSSUTIL_VER}/ossutil-${OSSUTIL_VER}-linux-${OSSUTIL_ARCH}.zip" \
             -o /tmp/ossutil_v2.zip
 
           cd /tmp && unzip -o ossutil_v2.zip
 
-          # zip 内部层级不固定，find 一下保险
-          OSSUTIL_BIN=$(find /tmp -maxdepth 4 -name 'ossutil' -type f 2>/dev/null | head -1)
-          if [ -z "${OSSUTIL_BIN}" ]; then
-            echo "ERROR: ossutil binary not found after unzip" >&2
+          # 直接构造已知路径，避免 find | head -1 在 pipefail 下触发 SIGPIPE 误退出
+          OSSUTIL_BIN="/tmp/ossutil-${OSSUTIL_VER}-linux-${OSSUTIL_ARCH}/ossutil"
+          if [ ! -f "${OSSUTIL_BIN}" ]; then
+            echo "ERROR: ossutil binary not found at ${OSSUTIL_BIN}" >&2
             ls -R /tmp/ossutil* 2>/dev/null || true
             exit 1
           fi
           sudo install -m 755 "${OSSUTIL_BIN}" /usr/local/bin/ossutil
 
-          # 版本校验：必须是 v2.x，否则后续 api 子命令仍会失败
-          INSTALLED_VER=$(ossutil --version 2>&1 | grep -oP 'v\d+\.\d+\.\d+' | head -1)
+          # grep -m1 代替 | head -1，同样避免 SIGPIPE；|| true 兜底
+          INSTALLED_VER=$(ossutil --version 2>&1 | grep -oP '\d+\.\d+\.\d+' | grep -m1 '' || true)
           echo "ossutil version: ${INSTALLED_VER}"
-          if echo "${INSTALLED_VER}" | grep -qP '^v1\.'; then
-            echo "ERROR: Still ossutil v1 – check CDN URL" >&2
+
+          MAJOR=$(echo "${INSTALLED_VER}" | cut -d. -f1)
+          if [ -z "${INSTALLED_VER}" ] || [ "${MAJOR}" = "1" ]; then
+            echo "ERROR: Expected ossutil v2.x, got '${INSTALLED_VER}'" >&2
+            ossutil --version 2>&1 || true
             exit 1
           fi
 
-          # v2 config 语法：用长参数（v1 的 -e/-i/-k 在 v2 不适用）
           ossutil config \
             --endpoint "oss-${REGION_ID}.aliyuncs.com" \
             --access-key-id  "${AK}" \
