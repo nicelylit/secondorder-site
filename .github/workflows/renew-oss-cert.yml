@@ -95,7 +95,7 @@ jobs:
           sudo install -m 755 "${OSSUTIL_BIN}" /usr/local/bin/ossutil
 
           # grep -m1 代替 | head -1，同样避免 SIGPIPE；|| true 兜底
-          INSTALLED_VER=$(ossutil --version 2>&1 | grep -oP '\d+\.\d+\.\d+' | grep -m1 '' || true)
+          INSTALLED_VER=$(ossutil version 2>&1 | grep -oP '\d+\.\d+\.\d+' | grep -m1 '' || true)
           echo "ossutil version: ${INSTALLED_VER}"
 
           MAJOR=$(echo "${INSTALLED_VER}" | cut -d. -f1)
