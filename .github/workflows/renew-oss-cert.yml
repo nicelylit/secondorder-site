@@ -78,7 +78,7 @@ jobs:
 
           echo "✅ ossutil config written (non-interactive)"
           # 用 list-buckets 快速验证凭证是否有效
-          ossutil ls oss:// --short 2>&1 | head -5 || true
+          ossutil ls oss://secondorder-redirect 2>&1 | head -5 || true
 
       # ── 检查证书过期时间，决定是否跳过续签 ──────────────────────────────────
       # 修复：Python 代码每行保持与 run: 块相同的基准缩进（10 空格），
