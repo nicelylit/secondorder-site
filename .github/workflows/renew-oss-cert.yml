@@ -19,7 +19,7 @@ env:
   CERT_PREFIX: "auto-renew"
   ACME_HOME: "/home/runner/.acme.sh"
   CERT_OUT_DIR: "/home/runner/cert-out"
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
 
 jobs:
   renew_and_deploy:
@@ -49,31 +49,25 @@ jobs:
         run: |
           mkdir -p "${CERT_OUT_DIR}"
 
-          # 用 “auto-renew-<timestamp>” 作为本次测试的证书标识（目录名）
           CERT_NAME="${CERT_PREFIX}-$(date -u +%Y%m%d%H%M%S)"
           echo "CERT_NAME=$CERT_NAME" >> $GITHUB_ENV
 
-          # 注意：acme.sh 的 --cert-home 是证书存放目录；用于隔离不同证书名
-          # 这里我们让它每次生成一个新的 cert-home，便于测试
           CERT_HOME="${CERT_OUT_DIR}/${CERT_NAME}"
           mkdir -p "${CERT_HOME}"
 
-          # 签发：覆盖 nicelylit.net + www.nicelylit.net
-          # --server letsencrypt 可省略（默认就是），写上更明确
           acme.sh --issue --server letsencrypt --dns dns_ali \
             --cert-home "${CERT_HOME}" \
             -d nicelylit.net \
             -d www.nicelylit.net
 
-          # 导出 fullchain.pem & private.key 到固定位置，供后续 put-cname 使用
           acme.sh --install-cert -d nicelylit.net \
             --cert-home "${CERT_HOME}" \
             --key-file       "${CERT_OUT_DIR}/private.key" \
             --fullchain-file "${CERT_OUT_DIR}/fullchain.pem"
 
-          # 基本校验（不输出私钥）
           openssl x509 -in "${CERT_OUT_DIR}/fullchain.pem" -noout -subject -issuer -dates
-          openssl x509 -in "${CERT_OUT_DIR}/fullchain.pem" -noout -text | grep -A1 "Subject Alternative Name"
+          openssl x509 -in "${CERT_OUT_DIR}/fullchain.pem" -noout -text \
+            | grep -A1 "Subject Alternative Name"
 
       - name: Install ossutil
         shell: bash
@@ -81,11 +75,13 @@ jobs:
           AK: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}
           SK: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}
         run: |
-          # 官方下载脚本（ossutil v2）
           curl -fsSL https://gosspublic.alicdn.com/ossutil/install.sh | sudo bash
 
-          # 配置凭证（写入到 runner 上的配置文件）
-          ossutil config -e "oss-${REGION_ID}.aliyuncs.com" -i "${AK}" -k "${SK}"
+          # ossutil v2 长参数写法
+          ossutil config \
+            --endpoint "oss-${REGION_ID}.aliyuncs.com" \
+            --access-key-id "${AK}" \
+            --access-key-secret "${SK}"
 
           ossutil --version
 
@@ -100,7 +96,6 @@ jobs:
             exit 1
           fi
 
-          # 把 PEM 内容安全嵌入 XML：需要把特殊字符转义
           xml_escape() {
             sed -e 's/&/\&amp;/g' \
                 -e 's/</\&lt;/g' \
@@ -109,29 +104,39 @@ jobs:
                 -e 's/"/\&quot;/g'
           }
 
-          CERT_ESCAPED="$(cat "${CERT_FILE}" | xml_escape)"
-          KEY_ESCAPED="$(cat "${KEY_FILE}" | xml_escape)"
+          CERT_ESCAPED="$(xml_escape < "${CERT_FILE}")"
+          KEY_ESCAPED="$(xml_escape < "${KEY_FILE}")"
 
           for d in ${DOMAINS}; do
             XML_PATH="${CERT_OUT_DIR}/cname-${d}.xml"
 
-            # 重要：不要 echo 证书内容到日志
-            cat > "${XML_PATH}" <<EOF
-<CnameConfiguration>
-  <Cname>
-    <Domain>${d}</Domain>
-    <Certificate>${CERT_ESCAPED}</Certificate>
-    <PrivateKey>${KEY_ESCAPED}</PrivateKey>
-    <Force>true</Force>
-  </Cname>
-</CnameConfiguration>
-EOF
+            # 修复1：不用 heredoc，全部用 echo/printf，保持 YAML 缩进合法
+            # 修复2：正确的阿里云 OSS PutCname XML 结构
+            #   根元素：BucketCnameConfiguration（原来是 CnameConfiguration）
+            #   证书字段：嵌套在 CertificateConfiguration 内（原来直接挂在 Cname 下）
+            {
+              echo '<BucketCnameConfiguration>'
+              echo '  <Cname>'
+              printf '    <Domain>%s</Domain>\n' "${d}"
+              echo '    <CertificateConfiguration>'
+              printf '      <Certificate>%s</Certificate>\n' "${CERT_ESCAPED}"
+              printf '      <PrivateKey>%s</PrivateKey>\n' "${KEY_ESCAPED}"
+              echo '      <Force>true</Force>'
+              echo '    </CertificateConfiguration>'
+              echo '  </Cname>'
+              echo '</BucketCnameConfiguration>'
+            } > "${XML_PATH}"
 
             echo "Putting cname certificate for ${d} ..."
-            ossutil api put-cname --bucket "${BUCKET}" --cname-configuration "file://${XML_PATH}"
 
-            # 可选：回读确认（不会泄露私钥）
-            ossutil api list-cname --bucket "${BUCKET}" --output-format json | grep -n "\"Domain\": \"${d}\"" -n || true
+            # 修复3：ossutil v2 的参数名是 --bucket-cname-configuration
+            ossutil api put-cname \
+              --bucket "${BUCKET}" \
+              --bucket-cname-configuration "file://${XML_PATH}"
+
+            # 回读确认（去掉重复的 -n）
+            ossutil api list-cname --bucket "${BUCKET}" --output-format json \
+              | grep "\"Domain\": \"${d}\"" || true
           done
 
       - name: Summary
