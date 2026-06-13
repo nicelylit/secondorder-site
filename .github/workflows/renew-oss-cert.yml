@@ -49,7 +49,7 @@ jobs:
         run: |
           mkdir -p "${CERT_OUT_DIR}"
 
-          CERT_NAME="${CERT_PREFIX}-$(date -u +%Y%m%d%H%M%S)"
+          CERT_NAME="${CERT_PREFIX}-$(date -u +%Y%m%dT%H%M%SZ)"
           echo "CERT_NAME=$CERT_NAME" >> $GITHUB_ENV
 
           CERT_HOME="${CERT_OUT_DIR}/${CERT_NAME}"
@@ -78,7 +78,7 @@ jobs:
         run: |
           # 从 Aliyun CDN 直接下载 ossutil v2（install.sh 装的是 v1，不含 api 子命令）
           curl -fsSL \
-            "https://gosspublic.alicdn.com/ossutil/v2/2.3.0/ossutil-2.3.0-linux-arm64.zip" \
+            "https://gosspublic.alicdn.com/ossutil/v2/2.3.0/ossutil-2.3.0-linux-amd64.zip" \
             -o /tmp/ossutil_v2.zip
 
           cd /tmp && unzip -o ossutil_v2.zip
