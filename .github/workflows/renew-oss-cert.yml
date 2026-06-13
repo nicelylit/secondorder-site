@@ -33,7 +33,7 @@ jobs:
         shell: bash
         run: |
           sudo apt-get update
-          sudo apt-get install -y curl openssl
+          sudo apt-get install -y curl openssl unzip
 
       - name: Install acme.sh
         shell: bash
@@ -69,21 +69,44 @@ jobs:
           openssl x509 -in "${CERT_OUT_DIR}/fullchain.pem" -noout -text \
             | grep -A1 "Subject Alternative Name"
 
-      - name: Install ossutil
+      # ── 核心修复：install.sh 只装 v1，必须手动下载 v2 ──────────────────
+      - name: Install ossutil v2
         shell: bash
         env:
           AK: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}
           SK: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}
         run: |
-          curl -fsSL https://gosspublic.alicdn.com/ossutil/install.sh | sudo bash
+          # 从 Aliyun CDN 直接下载 ossutil v2（install.sh 装的是 v1，不含 api 子命令）
+          curl -fsSL \
+            "https://gosspublic.alicdn.com/ossutil/v2/2.3.0/ossutil-2.3.0-linux-arm64.zip" \
+            -o /tmp/ossutil_v2.zip
 
-          # ossutil v2 长参数写法
+          cd /tmp && unzip -o ossutil_v2.zip
+
+          # zip 内部层级不固定，find 一下保险
+          OSSUTIL_BIN=$(find /tmp -maxdepth 4 -name 'ossutil' -type f 2>/dev/null | head -1)
+          if [ -z "${OSSUTIL_BIN}" ]; then
+            echo "ERROR: ossutil binary not found after unzip" >&2
+            ls -R /tmp/ossutil* 2>/dev/null || true
+            exit 1
+          fi
+          sudo install -m 755 "${OSSUTIL_BIN}" /usr/local/bin/ossutil
+
+          # 版本校验：必须是 v2.x，否则后续 api 子命令仍会失败
+          INSTALLED_VER=$(ossutil --version 2>&1 | grep -oP 'v\d+\.\d+\.\d+' | head -1)
+          echo "ossutil version: ${INSTALLED_VER}"
+          if echo "${INSTALLED_VER}" | grep -qP '^v1\.'; then
+            echo "ERROR: Still ossutil v1 – check CDN URL" >&2
+            exit 1
+          fi
+
+          # v2 config 语法：用长参数（v1 的 -e/-i/-k 在 v2 不适用）
           ossutil config \
             --endpoint "oss-${REGION_ID}.aliyuncs.com" \
-            --access-key-id "${AK}" \
-            --access-key-secret "${SK}"
-
-          ossutil --version
+            --access-key-id  "${AK}" \
+            --access-key-secret "${SK}" \
+            --region "${REGION_ID}"
+      # ───────────────────────────────────────────────────────────────────────
 
       - name: Update OSS CNAME certificate for nicelylit.net and www.nicelylit.net (PutCname)
         shell: bash
@@ -110,17 +133,14 @@ jobs:
           for d in ${DOMAINS}; do
             XML_PATH="${CERT_OUT_DIR}/cname-${d}.xml"
 
-            # 修复1：不用 heredoc，全部用 echo/printf，保持 YAML 缩进合法
-            # 修复2：正确的阿里云 OSS PutCname XML 结构
-            #   根元素：BucketCnameConfiguration（原来是 CnameConfiguration）
-            #   证书字段：嵌套在 CertificateConfiguration 内（原来直接挂在 Cname 下）
             {
+              echo '<?xml version="1.0" encoding="UTF-8"?>'
               echo '<BucketCnameConfiguration>'
               echo '  <Cname>'
-              printf '    <Domain>%s</Domain>\n' "${d}"
+              printf '    <Domain>%s</Domain>\n'      "${d}"
               echo '    <CertificateConfiguration>'
-              printf '      <Certificate>%s</Certificate>\n' "${CERT_ESCAPED}"
-              printf '      <PrivateKey>%s</PrivateKey>\n' "${KEY_ESCAPED}"
+              printf '      <Certificate>%s</Certificate>\n'  "${CERT_ESCAPED}"
+              printf '      <PrivateKey>%s</PrivateKey>\n'    "${KEY_ESCAPED}"
               echo '      <Force>true</Force>'
               echo '    </CertificateConfiguration>'
               echo '  </Cname>'
@@ -128,15 +148,12 @@ jobs:
             } > "${XML_PATH}"
 
             echo "Putting cname certificate for ${d} ..."
-
-            # 修复3：ossutil v2 的参数名是 --bucket-cname-configuration
             ossutil api put-cname \
               --bucket "${BUCKET}" \
               --bucket-cname-configuration "file://${XML_PATH}"
 
-            # 回读确认（去掉重复的 -n）
-            ossutil api list-cname --bucket "${BUCKET}" --output-format json \
-              | grep "\"Domain\": \"${d}\"" || true
+            ossutil api list-cname --bucket "${BUCKET}" \
+              | grep "${d}" || true
           done
 
       - name: Summary
