@@ -69,11 +69,16 @@ jobs:
             exit 1
           fi
 
-          ossutil config \
-            --endpoint "oss-${REGION_ID}.aliyuncs.com" \
-            --access-key-id  "${AK}" \
-            --access-key-secret "${SK}" \
-            --region "${REGION_ID}"
+          # ossutil v2 的 config 命令是纯交互式，无法用 flag 直接传参。
+          # 改为直接写配置文件，格式与 v1 相同。
+          printf '[Credentials]\nlanguage=EN\nendpoint=oss-%s.aliyuncs.com\naccessKeyID=%s\naccessKeySecret=%s\n' \
+            "${REGION_ID}" "${AK}" "${SK}" \
+            > "${HOME}/.ossutilconfig"
+          chmod 600 "${HOME}/.ossutilconfig"
+
+          echo "✅ ossutil config written (non-interactive)"
+          # 用 list-buckets 快速验证凭证是否有效
+          ossutil ls oss:// --short 2>&1 | head -5 || true
 
       # ── 检查证书过期时间，决定是否跳过续签 ──────────────────────────────────
       # 修复：Python 代码每行保持与 run: 块相同的基准缩进（10 空格），
