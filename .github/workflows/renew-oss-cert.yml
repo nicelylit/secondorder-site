@@ -1,0 +1,142 @@
+name: Renew OSS CNAME Certificate (nicelylit.net)
+
+on:
+  workflow_dispatch:
+  # 先手动测通；测通后你再加 cron
+  # schedule:
+  #   - cron: "0 3 * * *"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: oss-cname-cert-renew
+  cancel-in-progress: false
+
+env:
+  REGION_ID: cn-beijing
+  BUCKET: secondorder-redirect
+  DOMAINS: "nicelylit.net www.nicelylit.net"
+  CERT_PREFIX: "auto-renew"
+  ACME_HOME: "/home/runner/.acme.sh"
+  CERT_OUT_DIR: "/home/runner/cert-out"
+
+jobs:
+  renew_and_deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        shell: bash
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y curl openssl
+
+      - name: Install acme.sh
+        shell: bash
+        run: |
+          curl https://get.acme.sh | sh -s email=admin@nicelylit.net
+          echo "$HOME/.acme.sh" >> $GITHUB_PATH
+
+      - name: Issue/Renew certificate via AliDNS (acme.sh)
+        shell: bash
+        env:
+          Ali_Key: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}
+          Ali_Secret: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}
+        run: |
+          mkdir -p "${CERT_OUT_DIR}"
+
+          # 用 “auto-renew-<timestamp>” 作为本次测试的证书标识（目录名）
+          CERT_NAME="${CERT_PREFIX}-$(date -u +%Y%m%d%H%M%S)"
+          echo "CERT_NAME=$CERT_NAME" >> $GITHUB_ENV
+
+          # 注意：acme.sh 的 --cert-home 是证书存放目录；用于隔离不同证书名
+          # 这里我们让它每次生成一个新的 cert-home，便于测试
+          CERT_HOME="${CERT_OUT_DIR}/${CERT_NAME}"
+          mkdir -p "${CERT_HOME}"
+
+          # 签发：覆盖 nicelylit.net + www.nicelylit.net
+          # --server letsencrypt 可省略（默认就是），写上更明确
+          acme.sh --issue --server letsencrypt --dns dns_ali \
+            --cert-home "${CERT_HOME}" \
+            -d nicelylit.net \
+            -d www.nicelylit.net
+
+          # 导出 fullchain.pem & private.key 到固定位置，供后续 put-cname 使用
+          acme.sh --install-cert -d nicelylit.net \
+            --cert-home "${CERT_HOME}" \
+            --key-file       "${CERT_OUT_DIR}/private.key" \
+            --fullchain-file "${CERT_OUT_DIR}/fullchain.pem"
+
+          # 基本校验（不输出私钥）
+          openssl x509 -in "${CERT_OUT_DIR}/fullchain.pem" -noout -subject -issuer -dates
+          openssl x509 -in "${CERT_OUT_DIR}/fullchain.pem" -noout -text | grep -A1 "Subject Alternative Name"
+
+      - name: Install ossutil
+        shell: bash
+        env:
+          AK: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}
+          SK: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}
+        run: |
+          # 官方下载脚本（ossutil v2）
+          curl -fsSL https://gosspublic.alicdn.com/ossutil/install.sh | sudo bash
+
+          # 配置凭证（写入到 runner 上的配置文件）
+          ossutil config -e "oss-${REGION_ID}.aliyuncs.com" -i "${AK}" -k "${SK}"
+
+          ossutil --version
+
+      - name: Update OSS CNAME certificate for nicelylit.net and www.nicelylit.net (PutCname)
+        shell: bash
+        run: |
+          CERT_FILE="${CERT_OUT_DIR}/fullchain.pem"
+          KEY_FILE="${CERT_OUT_DIR}/private.key"
+
+          if [ ! -s "${CERT_FILE}" ] || [ ! -s "${KEY_FILE}" ]; then
+            echo "Missing cert or key file."
+            exit 1
+          fi
+
+          # 把 PEM 内容安全嵌入 XML：需要把特殊字符转义
+          xml_escape() {
+            sed -e 's/&/\&amp;/g' \
+                -e 's/</\&lt;/g' \
+                -e 's/>/\&gt;/g' \
+                -e "s/'/\&apos;/g" \
+                -e 's/"/\&quot;/g'
+          }
+
+          CERT_ESCAPED="$(cat "${CERT_FILE}" | xml_escape)"
+          KEY_ESCAPED="$(cat "${KEY_FILE}" | xml_escape)"
+
+          for d in ${DOMAINS}; do
+            XML_PATH="${CERT_OUT_DIR}/cname-${d}.xml"
+
+            # 重要：不要 echo 证书内容到日志
+            cat > "${XML_PATH}" <<EOF
+<CnameConfiguration>
+  <Cname>
+    <Domain>${d}</Domain>
+    <Certificate>${CERT_ESCAPED}</Certificate>
+    <PrivateKey>${KEY_ESCAPED}</PrivateKey>
+    <Force>true</Force>
+  </Cname>
+</CnameConfiguration>
+EOF
+
+            echo "Putting cname certificate for ${d} ..."
+            ossutil api put-cname --bucket "${BUCKET}" --cname-configuration "file://${XML_PATH}"
+
+            # 可选：回读确认（不会泄露私钥）
+            ossutil api list-cname --bucket "${BUCKET}" --output-format json | grep -n "\"Domain\": \"${d}\"" -n || true
+          done
+
+      - name: Summary
+        shell: bash
+        run: |
+          echo "Updated OSS CNAME certificate for: ${DOMAINS}"
+          echo "Bucket: ${BUCKET}"
+          echo "Cert run label: ${CERT_NAME}"
