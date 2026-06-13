@@ -99,8 +99,7 @@ jobs:
           echo "-------------------------------------------------"
 
           if [ "${OSSUTIL_EXIT}" -ne 0 ]; then
-            echo "WARNING: ossutil list-cname failed (exit ${OSSUTIL_EXIT})." \
-                 "Assuming renewal is needed."
+            echo "WARNING: ossutil list-cname failed (exit ${OSSUTIL_EXIT}). Assuming renewal needed."
             echo "SKIP_RENEW=false" >> "$GITHUB_ENV"
             exit 0
           fi
@@ -108,17 +107,32 @@ jobs:
           DAYS_LEFT=$(echo "${CNAME_XML}" | python3 -c '
           import sys, xml.etree.ElementTree as ET
           from datetime import datetime, timezone
+
           content = sys.stdin.read()
-          start = content.find("<ListCnameResult")
-          if start == -1:
-              sys.stderr.write("  WARNING: No ListCnameResult found, assuming renewal needed.\n")
+
+          TAG_OPEN  = "<ListCnameResult"
+          TAG_CLOSE = "</ListCnameResult>"
+          start = content.find(TAG_OPEN)
+          end   = content.find(TAG_CLOSE)
+
+          if start == -1 or end == -1:
+              sys.stderr.write("  WARNING: No ListCnameResult block found, assuming renewal needed.\n")
               print(0)
               sys.exit(0)
-          root = ET.fromstring(content[start:])
+
+          xml_text = content[start : end + len(TAG_CLOSE)]
+
+          try:
+              root = ET.fromstring(xml_text)
+          except ET.ParseError as e:
+              sys.stderr.write(f"  WARNING: XML parse error: {e}, assuming renewal needed.\n")
+              print(0)
+              sys.exit(0)
+
           dates = []
           for cname in root.findall("Cname"):
               domain = cname.findtext("Domain", "unknown")
-              cert = cname.find("Certificate")
+              cert   = cname.find("Certificate")
               if cert is None:
                   sys.stderr.write(f"  SKIP {domain}: no Certificate element\n")
                   continue
@@ -133,6 +147,7 @@ jobs:
                   sys.stderr.write(f"  {domain}: expires {end_str} ({days_left} days left)\n")
               except ValueError as e:
                   sys.stderr.write(f"  SKIP {domain}: cannot parse date [{end_str}]: {e}\n")
+
           if not dates:
               sys.stderr.write("  WARNING: No parseable expiry dates, assuming renewal needed.\n")
               print(0)
