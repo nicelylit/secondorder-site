@@ -19,6 +19,7 @@ env:
   CERT_PREFIX: "auto-renew"
   ACME_HOME: "/home/runner/.acme.sh"
   CERT_OUT_DIR: "/home/runner/cert-out"
+  THRESHOLD_DAYS: "7"
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
 
 jobs:
@@ -35,13 +36,113 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y curl openssl unzip
 
+      # ossutil 前移：check 步骤需要先有 ossutil
+      - name: Install ossutil v2
+        shell: bash
+        env:
+          AK: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}
+          SK: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}
+        run: |
+          OSSUTIL_VER="2.3.0"
+          OSSUTIL_ARCH="amd64"
+
+          curl -fsSL \
+            "https://gosspublic.alicdn.com/ossutil/v2/${OSSUTIL_VER}/ossutil-${OSSUTIL_VER}-linux-${OSSUTIL_ARCH}.zip" \
+            -o /tmp/ossutil_v2.zip
+
+          cd /tmp && unzip -o ossutil_v2.zip
+
+          OSSUTIL_BIN="/tmp/ossutil-${OSSUTIL_VER}-linux-${OSSUTIL_ARCH}/ossutil"
+          if [ ! -f "${OSSUTIL_BIN}" ]; then
+            echo "ERROR: ossutil binary not found at ${OSSUTIL_BIN}" >&2
+            ls -R /tmp/ossutil* 2>/dev/null || true
+            exit 1
+          fi
+          sudo install -m 755 "${OSSUTIL_BIN}" /usr/local/bin/ossutil
+
+          INSTALLED_VER=$(ossutil version 2>&1 | grep -oP '\d+\.\d+\.\d+' | grep -m1 '' || true)
+          echo "ossutil version: ${INSTALLED_VER}"
+
+          MAJOR=$(echo "${INSTALLED_VER}" | cut -d. -f1)
+          if [ -z "${INSTALLED_VER}" ] || [ "${MAJOR}" = "1" ]; then
+            echo "ERROR: Expected ossutil v2.x, got '${INSTALLED_VER}'" >&2
+            exit 1
+          fi
+
+          ossutil config \
+            --endpoint "oss-${REGION_ID}.aliyuncs.com" \
+            --access-key-id  "${AK}" \
+            --access-key-secret "${SK}" \
+            --region "${REGION_ID}"
+
+      # ── 检查证书过期时间，决定是否跳过续签 ──────────────────────────────────
+      # 修复：Python 代码每行保持与 run: 块相同的基准缩进（10 空格），
+      # YAML 解析时会剥去这 10 个空格，Python 拿到干净的 0 缩进代码。
+      - name: Check certificate expiry via list-cname
+        shell: bash
+        run: |
+          echo "Querying current certificate status for bucket: ${BUCKET}..."
+          CNAME_XML=$(ossutil api list-cname --bucket "${BUCKET}" 2>&1)
+          echo "${CNAME_XML}"
+
+          DAYS_LEFT=$(echo "${CNAME_XML}" | python3 -c '
+          import sys, xml.etree.ElementTree as ET
+          from datetime import datetime, timezone
+          content = sys.stdin.read()
+          start = content.find("<ListCnameResult")
+          if start == -1:
+              sys.stderr.write("  WARNING: No ListCnameResult found, assuming renewal needed.\n")
+              print(0)
+              sys.exit(0)
+          root = ET.fromstring(content[start:])
+          dates = []
+          for cname in root.findall("Cname"):
+              domain = cname.findtext("Domain", "unknown")
+              cert = cname.find("Certificate")
+              if cert is None:
+                  sys.stderr.write(f"  SKIP {domain}: no Certificate element\n")
+                  continue
+              end_str = (cert.findtext("ValidEndDate") or "").strip()
+              if not end_str:
+                  sys.stderr.write(f"  SKIP {domain}: empty ValidEndDate\n")
+                  continue
+              try:
+                  dt = datetime.strptime(end_str, "%b %d %H:%M:%S %Y %Z").replace(tzinfo=timezone.utc)
+                  days_left = (dt - datetime.now(timezone.utc)).days
+                  dates.append((days_left, domain, end_str))
+                  sys.stderr.write(f"  {domain}: expires {end_str} ({days_left} days left)\n")
+              except ValueError as e:
+                  sys.stderr.write(f"  SKIP {domain}: cannot parse date [{end_str}]: {e}\n")
+          if not dates:
+              sys.stderr.write("  WARNING: No parseable expiry dates, assuming renewal needed.\n")
+              print(0)
+          else:
+              dates.sort()
+              min_days, min_domain, min_date = dates[0]
+              sys.stderr.write(f"  --> Earliest expiry: {min_domain} on {min_date}\n")
+              print(min_days)
+          ')
+
+          echo "Minimum days until certificate expiry: ${DAYS_LEFT}"
+
+          if [ "${DAYS_LEFT}" -ge "${THRESHOLD_DAYS}" ]; then
+            echo "SKIP_RENEW=true" >> $GITHUB_ENV
+            echo "✅ Certificate still valid (${DAYS_LEFT} days left, threshold is ${THRESHOLD_DAYS}). Skipping renewal."
+          else
+            echo "SKIP_RENEW=false" >> $GITHUB_ENV
+            echo "⚠️  Certificate expiring in ${DAYS_LEFT} days (threshold is ${THRESHOLD_DAYS}). Proceeding with renewal."
+          fi
+      # ────────────────────────────────────────────────────────────────────────
+
       - name: Install acme.sh
+        if: env.SKIP_RENEW != 'true'
         shell: bash
         run: |
           curl https://get.acme.sh | sh -s email=admin@nicelylit.net
           echo "$HOME/.acme.sh" >> $GITHUB_PATH
 
       - name: Issue/Renew certificate via AliDNS (acme.sh)
+        if: env.SKIP_RENEW != 'true'
         shell: bash
         env:
           Ali_Key: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}
@@ -69,50 +170,8 @@ jobs:
           openssl x509 -in "${CERT_OUT_DIR}/fullchain.pem" -noout -text \
             | grep -A1 "Subject Alternative Name"
 
-      # ── 核心修复：install.sh 只装 v1，必须手动下载 v2 ──────────────────
-      - name: Install ossutil v2
-        shell: bash
-        env:
-          AK: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}
-          SK: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}
-        run: |
-          OSSUTIL_VER="2.3.0"
-          OSSUTIL_ARCH="amd64"
-
-          curl -fsSL \
-            "https://gosspublic.alicdn.com/ossutil/v2/${OSSUTIL_VER}/ossutil-${OSSUTIL_VER}-linux-${OSSUTIL_ARCH}.zip" \
-            -o /tmp/ossutil_v2.zip
-
-          cd /tmp && unzip -o ossutil_v2.zip
-
-          # 直接构造已知路径，避免 find | head -1 在 pipefail 下触发 SIGPIPE 误退出
-          OSSUTIL_BIN="/tmp/ossutil-${OSSUTIL_VER}-linux-${OSSUTIL_ARCH}/ossutil"
-          if [ ! -f "${OSSUTIL_BIN}" ]; then
-            echo "ERROR: ossutil binary not found at ${OSSUTIL_BIN}" >&2
-            ls -R /tmp/ossutil* 2>/dev/null || true
-            exit 1
-          fi
-          sudo install -m 755 "${OSSUTIL_BIN}" /usr/local/bin/ossutil
-
-          # grep -m1 代替 | head -1，同样避免 SIGPIPE；|| true 兜底
-          INSTALLED_VER=$(ossutil version 2>&1 | grep -oP '\d+\.\d+\.\d+' | grep -m1 '' || true)
-          echo "ossutil version: ${INSTALLED_VER}"
-
-          MAJOR=$(echo "${INSTALLED_VER}" | cut -d. -f1)
-          if [ -z "${INSTALLED_VER}" ] || [ "${MAJOR}" = "1" ]; then
-            echo "ERROR: Expected ossutil v2.x, got '${INSTALLED_VER}'" >&2
-            ossutil --version 2>&1 || true
-            exit 1
-          fi
-
-          ossutil config \
-            --endpoint "oss-${REGION_ID}.aliyuncs.com" \
-            --access-key-id  "${AK}" \
-            --access-key-secret "${SK}" \
-            --region "${REGION_ID}"
-      # ───────────────────────────────────────────────────────────────────────
-
       - name: Update OSS CNAME certificate for nicelylit.net and www.nicelylit.net (PutCname)
+        if: env.SKIP_RENEW != 'true'
         shell: bash
         run: |
           CERT_FILE="${CERT_OUT_DIR}/fullchain.pem"
@@ -141,10 +200,10 @@ jobs:
               echo '<?xml version="1.0" encoding="UTF-8"?>'
               echo '<BucketCnameConfiguration>'
               echo '  <Cname>'
-              printf '    <Domain>%s</Domain>\n'      "${d}"
+              printf '    <Domain>%s</Domain>\n'             "${d}"
               echo '    <CertificateConfiguration>'
-              printf '      <Certificate>%s</Certificate>\n'  "${CERT_ESCAPED}"
-              printf '      <PrivateKey>%s</PrivateKey>\n'    "${KEY_ESCAPED}"
+              printf '      <Certificate>%s</Certificate>\n' "${CERT_ESCAPED}"
+              printf '      <PrivateKey>%s</PrivateKey>\n'   "${KEY_ESCAPED}"
               echo '      <Force>true</Force>'
               echo '    </CertificateConfiguration>'
               echo '  </Cname>'
@@ -154,7 +213,7 @@ jobs:
             echo "Putting cname certificate for ${d} ..."
             ossutil api put-cname \
               --bucket "${BUCKET}" \
-              --bucket-cname-configuration "file://${XML_PATH}"
+              --cname-configuration "file://${XML_PATH}"
 
             ossutil api list-cname --bucket "${BUCKET}" \
               | grep "${d}" || true
@@ -163,6 +222,10 @@ jobs:
       - name: Summary
         shell: bash
         run: |
-          echo "Updated OSS CNAME certificate for: ${DOMAINS}"
-          echo "Bucket: ${BUCKET}"
-          echo "Cert run label: ${CERT_NAME}"
+          if [ "${SKIP_RENEW}" = "true" ]; then
+            echo "⏭️  Renewal skipped: certificate is still valid (>${THRESHOLD_DAYS} days remaining)."
+          else
+            echo "✅ Updated OSS CNAME certificate for: ${DOMAINS}"
+            echo "   Bucket:     ${BUCKET}"
+            echo "   Cert label: ${CERT_NAME:-N/A}"
+          fi
