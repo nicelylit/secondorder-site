@@ -25,7 +25,7 @@ jobs:
       ACME_HOME: "${{ github.workspace }}/.acme.sh"
       CERT_DIR: "${{ github.workspace }}/certs"
       ALIYUN_REGION_ID: "cn-beijing"
-      RENEW_BEFORE_DAYS: "7"
+      RENEW_BEFORE_DAYS: "14"
 
     steps:
       - name: Checkout

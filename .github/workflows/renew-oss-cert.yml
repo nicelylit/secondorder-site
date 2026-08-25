@@ -19,7 +19,7 @@ env:
   CERT_PREFIX: "auto-renew"
   ACME_HOME: "/home/runner/.acme.sh"
   CERT_OUT_DIR: "/home/runner/cert-out"
-  THRESHOLD_DAYS: "7"
+  THRESHOLD_DAYS: "14"
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
 
 jobs:
