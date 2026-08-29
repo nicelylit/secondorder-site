@@ -95,6 +95,7 @@ jobs:
             2>&1) || OSSUTIL_EXIT=$?
 
           echo "--- ossutil raw output (exit=${OSSUTIL_EXIT}) ---"
+          echo "REGION_ID=${REGION_ID}"
           echo "${CNAME_XML}"
           echo "-------------------------------------------------"
 
@@ -248,9 +249,11 @@ jobs:
             echo "Putting cname certificate for ${d} ..."
             ossutil api put-cname \
               --bucket "${BUCKET}" \
+              --region "${REGION_ID}" \
               --cname-configuration "file://${XML_PATH}"
 
             ossutil api list-cname --bucket "${BUCKET}" \
+              --region "${REGION_ID}" \
               | grep "${d}" || true
           done
 
